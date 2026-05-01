@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Mapa Dengue Recife</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<style>
+body { margin: 0; }
+#map { height: 100vh; }
+
+.legend {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+}
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<div class="legend">
+<b>Risco</b><br>
+🟢 Baixo<br>
+🟡 Médio<br>
+🔴 Alto
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+const map = L.map('map').setView([-8.05, -34.9], 11);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap'
+}).addTo(map);
+
+// 🎨 estilo direto da API
+function estilo(feature) {
+  return {
+    fillColor: feature.properties.cor,
+    weight: 1,
+    color: "#333",
+    fillOpacity: 0.7
+  };
+}
+
+// 🖱️ interação
+function interacao(feature, layer) {
+  const p = feature.properties;
+
+  layer.on({
+    click: () => {
+      layer.bindPopup(`
+        <b>${p.EBAIRRNOME}</b><br>
+        Casos: ${p.casos}<br>
+        Risco: ${p.risco}
+      `).openPopup();
+    }
+  });
+}
+
+// 🚀 carregar mapa direto da API
+fetch("http://127.0.0.1:5000/mapa")
+  .then(res => res.json())
+  .then(data => {
+    L.geoJSON(data, {
+      style: estilo,
+      onEachFeature: interacao
+    }).addTo(map);
+  })
+  .catch(err => console.error("Erro:", err));
+</script>
+
+</body>
+</html>

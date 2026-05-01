@@ -1,4 +1,4 @@
-## 🦟 Previsão de Casos de Dengue em Recife
+# 🦟 Previsão de Casos de Dengue em Recife
 
 Projeto de Big Data desenvolvido em Python para prever casos de dengue
 em Recife (PE) com base em dados epidemiológicos e climáticos.
@@ -20,43 +20,65 @@ Vigilância Epidemiológica.
 
 ## 📊 Resultados dos Modelos
 
-| Modelo            | MAE       | RMSE      | R²    |
-|-------------------|-----------|-----------|-------|
-| Regressão Linear  | 21.9 casos| 30.6 casos| 0.976 |
-| Random Forest     | 17.5 casos| 41.0 casos| 0.958 |
-| XGBoost           | 14.3 casos| 38.1 casos| 0.964 |
+| Modelo            | MAE        | RMSE       | R²    |
+|-------------------|------------|------------|-------|
+| Regressão Linear  | 21.9 casos | 30.6 casos | 0.976 |
+| Random Forest     | 17.5 casos | 41.0 casos | 0.958 |
+| XGBoost           | 14.3 casos | 38.1 casos | 0.964 |
 
 > **Melhor modelo:** XGBoost com MAE de 14.3 casos/semana
 
 ## 🗂️ Estrutura do Projeto
+
+```
 dengue-recife/
 ├── data/
 │   ├── raw/                  # Dados brutos da API InfoDengue
-│   └── processed/            # Dados processados com features
+│   ├── processed/            # Dados processados com features
+│   ├── external/             # Dados externos complementares
+│   └── geo/                  # Shapefiles e GeoJSON dos bairros
+├── frontend/
+│   ├── index.html            # Landing page
+│   ├── dashboard.html        # Dashboard interativo
+│   ├── previsao.html         # Tela de previsão de risco
+│   └── mapa.html             # Mapa por bairro
+├── models/
+│   ├── xgboost_dengue.pkl    # Modelo XGBoost treinado
+│   └── features.pkl          # Lista de features do modelo
 ├── notebooks/
 │   ├── 01_eda.ipynb          # Análise exploratória
 │   └── 02_modelagem.ipynb    # Conclusões e modelagem
-├── outputs/                  # Gráficos gerados
+├── outputs/                  # Gráficos e relatórios gerados
 ├── src/
-│   ├── ingestion.py          # Coleta de dados
-│   ├── processing.py         # Pré-processamento
-│   ├── model.py              # Treinamento dos modelos
-│   └── dashboard.py          # Dashboard interativo
+│   ├── api.py                # API Flask (serve o modelo)
+│   ├── dashboard.py          # Dashboard Plotly Dash
+│   ├── ingestion.py          # Coleta de dados InfoDengue
+│   ├── mapa_bairros.py       # Mapa coroplético Folium
+│   ├── model.py              # Treinamento e avaliação dos modelos
+│   ├── processing.py         # Pré-processamento e feature engineering
+│   ├── report.py             # Geração de relatório PowerPoint
+│   └── visualization.py     # Geração de gráficos
+├── main.py                   # Pipeline completo
 ├── requirements.txt
 └── README.md
+```
+
 ## 🔧 Tecnologias
 
 - **Python 3.12**
 - **Pandas / Dask** — manipulação de dados
 - **Scikit-learn / XGBoost** — modelagem
+- **Flask / Flask-CORS** — API REST
 - **Plotly Dash** — dashboard interativo
+- **Folium** — mapas geoespaciais
 - **Matplotlib / Seaborn** — visualizações
+- **python-pptx** — geração de relatório PowerPoint
 
 ## 📦 Instalação
 
 ```bash
 # Clone o repositório
-git clone https://github.com/SEU_USUARIO/dengue-recife.git
+git clone https://github.com/JoaoVitorXdz/dengue-recife.git
 cd dengue-recife
 
 # Crie o ambiente virtual
@@ -79,17 +101,26 @@ python src/processing.py
 # 3. Treinar modelos
 python src/model.py
 
-# 4. Rodar dashboard
+# 4. Rodar dashboard Dash
 python src/dashboard.py
 # Acesse: http://127.0.0.1:8050
+
+# 5. Rodar API Flask
+python src/api.py
+# Acesse: http://127.0.0.1:5000
+
+# 6. Rodar pipeline completo (passos 2, 3 e relatório)
+python main.py
 ```
 
 ## 🗃️ Fontes de Dados
 
-- [InfoDengue](https://info.dengue.mat.br) — casos e clima integrados
+- [InfoDengue](https://info.dengue.mat.br) — casos semanais + clima integrados
 - Código IBGE Recife: `2611606`
+- [INMET](https://inmet.gov.br) — dados climáticos complementares (opcional)
 
 ## 👤 Autor
 
-Desenvolvido como projeto de Big Data — Faculdade [Estácio]  
-[Joao Vitor] — [joaovitorxd3343@hotmail.com]
+Desenvolvido como projeto de Big Data — Faculdade Estácio
+João Vitor — joaovitorxd3343@hotmail.com
+GitHub: https://github.com/JoaoVitorXdz/dengue-recife

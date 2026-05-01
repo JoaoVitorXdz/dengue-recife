@@ -48,6 +48,7 @@
     font-family: inherit; font-size: 0.95rem;
     transition: border-color 0.2s, box-shadow 0.2s;
     -moz-appearance: textfield;
+    appearance: textfield;
   }
   input[type="number"]:focus {
     outline: none; border-color: var(--red);
@@ -254,64 +255,66 @@
 </div>
 
 <script>
-function prever() {
-  const mes    = +document.getElementById('mes').value;
-  const semana = +document.getElementById('semana').value;
-  const tempmed= +document.getElementById('tempmed').value;
-  const tempmin= +document.getElementById('tempmin').value;
-  const tempmax= +document.getElementById('tempmax').value;
-  const umidmed= +document.getElementById('umidmed').value;
-  const umidmin= +document.getElementById('umidmin').value;
-  const p_rt1  = +document.getElementById('p_rt1').value;
-  const lag1   = +document.getElementById('lag1').value;
-  const lag2   = +document.getElementById('lag2').value;
-  const lag4   = +document.getElementById('lag4').value;
-  const media4 = +document.getElementById('media4').value;
+async function prever() {
+  const btn = document.querySelector('.btn-predict');
+  btn.textContent = '⏳ Calculando...';
+  btn.disabled = true;
 
-  // Simplified prediction model (approximation of trained XGBoost)
-  let pred = lag1 * 0.55 + lag2 * 0.20 + lag4 * 0.08 + media4 * 0.12;
-
-  // Seasonal factor
-  const sazon = [1.8, 2.0, 1.6, 1.2, 0.8, 0.6, 0.5, 0.5, 0.6, 0.8, 1.0, 1.4];
-  pred *= sazon[mes - 1];
-
-  // Climate adjustment
-  if (umidmed > 85) pred *= 1.15;
-  else if (umidmed < 65) pred *= 0.85;
-  if (tempmed > 28) pred *= 1.1;
-  pred *= (1 + (p_rt1 - 0.5) * 0.4);
-
-  pred = Math.max(0, Math.round(pred));
-
-  const nivel = pred < 100 ? 'baixo' : pred < 400 ? 'medio' : 'alto';
-  const nivelLabel = { baixo: '🟢 Baixo', medio: '🟡 Médio', alto: '🔴 Alto' };
-  const msgs = {
-    baixo: 'O modelo indica baixo risco de surto na próxima semana. Manter vigilância de rotina e ações preventivas continuadas.',
-    medio: 'Risco moderado detectado. Recomenda-se intensificar vistorias de focos, campanhas de comunicação e preparo das unidades de saúde.',
-    alto: 'Atenção: alto risco de surto na próxima semana. Ativar protocolo de emergência epidemiológica e reforçar equipes de campo.'
+  const payload = {
+    mes:         +document.getElementById('mes').value,
+    semana:      +document.getElementById('semana').value,
+    tempmed:     +document.getElementById('tempmed').value,
+    tempmin:     +document.getElementById('tempmin').value,
+    tempmax:     +document.getElementById('tempmax').value,
+    umidmed:     +document.getElementById('umidmed').value,
+    umidmin:     +document.getElementById('umidmin').value,
+    umidmax:     95,
+    p_rt1:       +document.getElementById('p_rt1').value,
+    casos_lag1:  +document.getElementById('lag1').value,
+    casos_lag2:  +document.getElementById('lag2').value,
+    casos_lag4:  +document.getElementById('lag4').value,
+    media_movel_4: +document.getElementById('media4').value,
   };
-  const gaugeW = { baixo: '25%', medio: '60%', alto: '92%' };
-  const gaugeC = { baixo: 'var(--green)', medio: 'var(--amber)', alto: 'var(--red)' };
 
-  document.getElementById('resultado').style.display = 'block';
-  const rn = document.getElementById('riskNum');
-  rn.textContent = pred;
-  rn.className = 'risk-num ' + nivel;
+  try {
+    const res  = await fetch('http://127.0.0.1:5000/predict', {
+      method:  'POST',
+      headers: {'Content-Type': 'application/json'},
+      body:    JSON.stringify(payload)
+    });
+    const data = await res.json();
 
-  const rb = document.getElementById('riskBadge');
-  rb.textContent = nivelLabel[nivel];
-  rb.className = 'risk-badge ' + nivel;
+    if (data.error) { alert('Erro: ' + data.error); return; }
 
-  const gf = document.getElementById('gaugeFill');
-  gf.style.background = gaugeC[nivel];
-  setTimeout(() => { gf.style.width = gaugeW[nivel]; }, 50);
+    const { casos_previstos, risco } = data;
+    const nivel = risco.nivel;
 
-  document.getElementById('dTemp').textContent = tempmed + '°C';
-  document.getElementById('dUmid').textContent = umidmed + '%';
-  document.getElementById('dLag1').textContent = lag1 + ' casos';
-  document.getElementById('resultMsg').textContent = msgs[nivel];
+    document.getElementById('resultado').style.display = 'block';
+    const rn = document.getElementById('riskNum');
+    rn.textContent = casos_previstos;
+    rn.className   = 'risk-num ' + nivel;
 
-  document.getElementById('resultado').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const rb = document.getElementById('riskBadge');
+    rb.textContent = risco.label;
+    rb.className   = 'risk-badge ' + nivel;
+
+    const gf = document.getElementById('gaugeFill');
+    gf.style.background = risco.cor;
+    setTimeout(() => { gf.style.width = risco.gauge + '%'; }, 50);
+
+    document.getElementById('dTemp').textContent = payload.tempmed + '°C';
+    document.getElementById('dUmid').textContent = payload.umidmed + '%';
+    document.getElementById('dLag1').textContent = payload.casos_lag1 + ' casos';
+    document.getElementById('resultMsg').textContent = risco.mensagem;
+
+    document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
+
+  } catch (e) {
+    alert('Não foi possível conectar à API. Certifique-se que python src/api.py está rodando.');
+  } finally {
+    btn.textContent = '🔍 Calcular previsão';
+    btn.disabled = false;
+  }
 }
 </script>
 </body>

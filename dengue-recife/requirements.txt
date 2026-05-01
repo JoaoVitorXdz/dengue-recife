@@ -11,3 +11,7 @@ seaborn
 requests
 openpyxl
 jupyter
+flask
+flask-cors
+joblib
+python-pptx
