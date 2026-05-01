@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DengueAlert Recife</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red:     #C8382A;
+    --red-light: #F2E8E6;
+    --amber:   #D97B2A;
+    --green:   #2A7A4B;
+    --ink:     #1A1410;
+    --muted:   #6B5E58;
+    --paper:   #FAF7F4;
+    --card:    #FFFFFF;
+    --border:  #E8E0DA;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 3rem;
+    background: rgba(250,247,244,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.25rem;
+    color: var(--red);
+    text-decoration: none;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--muted);
+    font-size: 0.9rem; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--red); }
+  .nav-cta {
+    background: var(--red); color: white;
+    padding: 0.5rem 1.25rem; border-radius: 100px;
+    text-decoration: none; font-size: 0.85rem; font-weight: 500;
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 3rem 4rem;
+    gap: 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -20%; right: -10%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(200,56,42,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--red-light); color: var(--red);
+    padding: 0.35rem 0.9rem; border-radius: 100px;
+    font-size: 0.8rem; font-weight: 500;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-tag span { width: 6px; height: 6px; background: var(--red); border-radius: 50%; }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .hero h1 em { color: var(--red); font-style: italic; }
+  .hero p {
+    font-size: 1.1rem; color: var(--muted); line-height: 1.7;
+    max-width: 480px; margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-actions {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .btn-primary {
+    background: var(--red); color: white;
+    padding: 0.8rem 2rem; border-radius: 100px;
+    text-decoration: none; font-weight: 500;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 16px rgba(200,56,42,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,56,42,0.4); }
+  .btn-secondary {
+    background: transparent; color: var(--ink);
+    padding: 0.8rem 2rem; border-radius: 100px;
+    text-decoration: none; font-weight: 500;
+    border: 1.5px solid var(--border);
+    transition: border-color 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--ink); }
+
+  /* HERO VISUAL */
+  .hero-visual {
+    animation: fadeUp 0.6s 0.2s ease both;
+    position: relative;
+  }
+  .stat-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .stat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+  .stat-card.accent {
+    background: var(--red); border-color: var(--red);
+    grid-column: span 2;
+  }
+  .stat-label { font-size: 0.8rem; color: var(--muted); font-weight: 500; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .stat-card.accent .stat-label { color: rgba(255,255,255,0.7); }
+  .stat-value { font-family: 'DM Serif Display', serif; font-size: 2.4rem; color: var(--ink); }
+  .stat-card.accent .stat-value { color: white; font-size: 1.8rem; }
+  .stat-sub { font-size: 0.85rem; color: var(--muted); margin-top: 0.25rem; }
+  .stat-card.accent .stat-sub { color: rgba(255,255,255,0.75); }
+
+  /* SECTION BASE */
+  section { padding: 6rem 3rem; }
+  .section-tag {
+    font-size: 0.8rem; font-weight: 500; color: var(--red);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+  .section-sub { color: var(--muted); font-size: 1rem; line-height: 1.7; max-width: 560px; }
+
+  /* DADOS */
+  .dados { background: var(--ink); color: var(--paper); }
+  .dados .section-tag { color: var(--amber); }
+  .dados .section-title { color: var(--paper); }
+  .dados .section-sub { color: rgba(250,247,244,0.6); }
+  .dados-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem; margin-top: 3rem;
+  }
+  .dado-item {
+    padding: 2rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    transition: border-color 0.2s;
+  }
+  .dado-item:hover { border-color: rgba(255,255,255,0.3); }
+  .dado-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3rem; color: var(--amber); line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .dado-desc { color: rgba(250,247,244,0.7); font-size: 0.9rem; line-height: 1.6; }
+  .dado-title { color: var(--paper); font-weight: 500; margin-bottom: 0.4rem; }
+
+  /* MODELOS */
+  .modelos-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem; margin-top: 3rem;
+  }
+  .modelo-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .modelo-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.1); }
+  .modelo-card.best {
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(200,56,42,0.1);
+  }
+  .best-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--red); color: white;
+    padding: 0.2rem 0.8rem; border-radius: 100px;
+    font-size: 0.7rem; font-weight: 500; white-space: nowrap;
+  }
+  .modelo-name { font-family: 'DM Serif Display', serif; font-size: 1.4rem; margin-bottom: 1.5rem; }
+  .modelo-metrics { display: flex; flex-direction: column; gap: 0.75rem; }
+  .metric { display: flex; justify-content: space-between; align-items: center; }
+  .metric-label { font-size: 0.85rem; color: var(--muted); }
+  .metric-value { font-weight: 500; font-size: 0.95rem; }
+  .metric-bar { height: 4px; background: var(--border); border-radius: 2px; margin-top: 0.3rem; }
+  .metric-fill { height: 100%; border-radius: 2px; background: var(--red); }
+
+  /* PIPELINE */
+  .pipeline { background: #F5F0EB; }
+  .steps {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 0; margin-top: 3rem;
+    position: relative;
+  }
+  .steps::before {
+    content: '';
+    position: absolute; top: 28px; left: 10%; right: 10%;
+    height: 2px; background: var(--border); z-index: 0;
+  }
+  .step { text-align: center; padding: 0 1rem; position: relative; z-index: 1; }
+  .step-num {
+    width: 56px; height: 56px;
+    background: var(--card); border: 2px solid var(--border);
+    border-radius: 50%; margin: 0 auto 1rem;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Serif Display', serif; font-size: 1.3rem;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .step:hover .step-num { background: var(--red); border-color: var(--red); color: white; }
+  .step-title { font-weight: 500; font-size: 0.9rem; margin-bottom: 0.4rem; }
+  .step-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+  /* CTA */
+  .cta-section {
+    background: var(--red); color: white;
+    text-align: center; padding: 6rem 3rem;
+  }
+  .cta-section .section-title { color: white; }
+  .cta-section p { color: rgba(255,255,255,0.8); max-width: 480px; margin: 1rem auto 2.5rem; font-size: 1.05rem; line-height: 1.7; }
+  .btn-white {
+    background: white; color: var(--red);
+    padding: 0.9rem 2.5rem; border-radius: 100px;
+    text-decoration: none; font-weight: 500;
+    display: inline-block;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+  .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.3); }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink); color: rgba(250,247,244,0.5);
+    padding: 2rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.85rem;
+  }
+  footer a { color: rgba(250,247,244,0.5); text-decoration: none; }
+  footer a:hover { color: var(--paper); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0; transform: translateY(32px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* MINI CHART */
+  .mini-chart { margin-top: 1rem; }
+  .chart-bars { display: flex; align-items: flex-end; gap: 3px; height: 60px; }
+  .bar {
+    flex: 1; border-radius: 3px 3px 0 0;
+    background: rgba(200,56,42,0.2);
+    transition: background 0.2s;
+    animation: growUp 0.8s ease both;
+  }
+  .bar:hover { background: var(--red); }
+  @keyframes growUp {
+    from { transform: scaleY(0); transform-origin: bottom; }
+    to   { transform: scaleY(1); transform-origin: bottom; }
+  }
+
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; }
+    .dados-grid, .modelos-grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">🦟 DengueAlert</a>
+  <ul class="nav-links">
+    <li><a href="#dados">Dados</a></li>
+    <li><a href="#modelos">Modelos</a></li>
+    <li><a href="#pipeline">Pipeline</a></li>
+  </ul>
+  <a href="previsao.html" class="nav-cta">Fazer Previsão →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-tag"><span></span> Projeto de Big Data — Recife, PE</div>
+    <h1>Prevendo surtos de <em>dengue</em> antes que aconteçam</h1>
+    <p>Modelo preditivo treinado com 10 anos de dados epidemiológicos e climáticos de Recife. R² acima de 0.97 nos melhores modelos.</p>
+    <div class="hero-actions">
+      <a href="previsao.html" class="btn-primary">Testar Previsão</a>
+      <a href="dashboard.html" class="btn-secondary">Ver Dashboard</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="stat-grid">
+      <div class="stat-card accent">
+        <div class="stat-label">Melhor resultado — XGBoost</div>
+        <div class="stat-value">R² = 0.964</div>
+        <div class="stat-sub">MAE de apenas 14.3 casos/semana</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Semanas analisadas</div>
+        <div class="stat-value">520</div>
+        <div class="stat-sub">2015 – 2024</div>
+        <div class="mini-chart">
+          <div class="chart-bars" id="heroChart"></div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Variáveis do modelo</div>
+        <div class="stat-value">13</div>
+        <div class="stat-sub">Clima + lag features</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DADOS -->
+<section class="dados" id="dados">
+  <div class="reveal">
+    <div class="section-tag">Base de dados</div>
+    <h2 class="section-title">10 anos de dados reais de Recife</h2>
+    <p class="section-sub">Coletados via API InfoDengue — casos confirmados, temperatura, umidade e nível de alerta epidemiológico por semana.</p>
+  </div>
+  <div class="dados-grid reveal">
+    <div class="dado-item">
+      <div class="dado-num">520</div>
+      <div class="dado-title">Semanas epidemiológicas</div>
+      <div class="dado-desc">Cobrindo de janeiro de 2015 a dezembro de 2024, com resolução semanal.</div>
+    </div>
+    <div class="dado-item">
+      <div class="dado-num">31</div>
+      <div class="dado-title">Variáveis brutas</div>
+      <div class="dado-desc">Casos, temperatura (min/med/max), umidade, nível de alerta, Rt e mais.</div>
+    </div>
+    <div class="dado-item">
+      <div class="dado-num">4</div>
+      <div class="dado-title">Níveis de alerta</div>
+      <div class="dado-desc">Verde, amarelo, laranja e vermelho — distribuídos ao longo dos anos com padrão sazonal claro.</div>
+    </div>
+  </div>
+</section>
+
+<!-- MODELOS -->
+<section id="modelos" style="background: var(--paper);">
+  <div class="reveal">
+    <div class="section-tag">Machine Learning</div>
+    <h2 class="section-title">Três modelos comparados</h2>
+    <p class="section-sub">Treinados com split temporal (80/20), avaliados por MAE, RMSE e R².</p>
+  </div>
+  <div class="modelos-grid reveal">
+    <div class="modelo-card">
+      <div class="modelo-name">Regressão Linear</div>
+      <div class="modelo-metrics">
+        <div>
+          <div class="metric"><span class="metric-label">MAE</span><span class="metric-value">21.9 casos</span></div>
+          <div class="metric-bar"><div class="metric-fill" style="width:60%; background: var(--muted);"></div></div>
+        </div>
+        <div>
+          <div class="metric"><span class="metric-label">RMSE</span><span class="metric-value">30.6</span></div>
+        </div>
+        <div>
+          <div class="metric"><span class="metric-label">R²</span><span class="metric-value" style="color:var(--green)">0.976</span></div>
+          <div class="metric-bar"><div class="metric-fill" style="width:97.6%; background:var(--green);"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modelo-card">
+      <div class="modelo-name">Random Forest</div>
+      <div class="modelo-metrics">
+        <div>
+          <div class="metric"><span class="metric-label">MAE</span><span class="metric-value">17.5 casos</span></div>
+          <div class="metric-bar"><div class="metric-fill" style="width:75%;"></div></div>
+        </div>
+        <div>
+          <div class="metric"><span class="metric-label">RMSE</span><span class="metric-value">41.0</span></div>
+        </div>
+        <div>
+          <div class="metric"><span class="metric-label">R²</span><span class="metric-value" style="color:var(--green)">0.958</span></div>
+          <div class="metric-bar"><div class="metric-fill" style="width:95.8%; background:var(--green);"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modelo-card best">
+      <div class="best-badge">✦ Melhor MAE</div>
+      <div class="modelo-name">XGBoost</div>
+      <div class="modelo-metrics">
+        <div>
+          <div class="metric"><span class="metric-label">MAE</span><span class="metric-value" style="color:var(--red)">14.3 casos</span></div>
+          <div class="metric-bar"><div class="metric-fill" style="width:90%;"></div></div>
+        </div>
+        <div>
+          <div class="metric"><span class="metric-label">RMSE</span><span class="metric-value">38.1</span></div>
+        </div>
+        <div>
+          <div class="metric"><span class="metric-label">R²</span><span class="metric-value" style="color:var(--green)">0.964</span></div>
+          <div class="metric-bar"><div class="metric-fill" style="width:96.4%; background:var(--green);"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section class="pipeline" id="pipeline">
+  <div class="reveal">
+    <div class="section-tag">Metodologia</div>
+    <h2 class="section-title">Pipeline completo</h2>
+    <p class="section-sub">Da coleta de dados ao dashboard interativo, em 6 etapas reproduzíveis.</p>
+  </div>
+  <div class="steps reveal">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-title">Ingestão</div>
+      <div class="step-desc">API InfoDengue, 2015–2024, Recife PE</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-title">EDA</div>
+      <div class="step-desc">Análise exploratória e correlações</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-title">Features</div>
+      <div class="step-desc">Lag features, médias móveis</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-title">Modelos</div>
+      <div class="step-desc">LR, Random Forest, XGBoost</div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-title">Dashboard</div>
+      <div class="step-desc">Plotly Dash interativo</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 class="section-title">Teste o modelo agora</h2>
+  <p>Insira dados climáticos e históricos e veja a previsão de risco de dengue para a próxima semana em Recife.</p>
+  <a href="previsao.html" class="btn-white">Abrir Previsão →</a>
+</section>
+
+<footer>
+  <span>DengueAlert Recife — Projeto de Big Data</span>
+  <span>Dados: <a href="https://info.dengue.mat.br" target="_blank">InfoDengue</a> · Código: <a href="https://github.com/JoaoVitorXdz/dengue-recife" target="_blank">GitHub</a></span>
+</footer>
+
+<script>
+  // Hero mini chart
+  const bars = document.getElementById('heroChart');
+  const heights = [45,60,80,55,30,25,20,35,40,30,28,22,35,45,50,40,30,55,70,65,45,35,28,22,30,40,85,75,60,45];
+  heights.forEach((h, i) => {
+    const b = document.createElement('div');
+    b.className = 'bar';
+    b.style.height = h + '%';
+    b.style.animationDelay = (i * 0.03) + 's';
+    bars.appendChild(b);
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
