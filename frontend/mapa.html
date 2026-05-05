@@ -2,80 +2,218 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Mapa Dengue Recife</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa Dengue — DengueAlert Recife</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-body { margin: 0; }
-#map { height: 100vh; }
+  :root{--red:#C8382A;--amber:#D97B2A;--green:#2A7A4B;--ink:#1A1410;--muted:#6B5E58;--paper:#FAF7F4;--card:#fff;--border:#E8E0DA}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink)}
 
-.legend {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  background: white;
-  padding: 10px;
-  border-radius: 8px;
-}
+  nav{display:flex;align-items:center;justify-content:space-between;padding:.75rem 2rem;background:rgba(250,247,244,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:fixed;top:0;left:0;right:0;z-index:1000;}
+  .nav-logo{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--red);text-decoration:none}
+  .nav-back{color:var(--muted);text-decoration:none;font-size:.85rem;display:flex;align-items:center;gap:.4rem;transition:color .2s}
+  .nav-back:hover{color:var(--ink)}
+
+  #map{height:100vh;margin-top:52px}
+
+  /* Painel lateral */
+  .panel{
+    position:fixed;top:52px;right:0;bottom:0;width:300px;
+    background:var(--card);border-left:1px solid var(--border);
+    z-index:500;display:flex;flex-direction:column;
+    overflow:hidden;transition:transform .3s;
+  }
+  .panel-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
+  .panel-title{font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.2rem}
+  .panel-sub{font-size:.75rem;color:var(--muted)}
+  .panel-body{padding:1.25rem 1.5rem;flex:1;overflow-y:auto}
+
+  /* Card de bairro selecionado */
+  .bairro-card{display:none}
+  .bairro-card.visible{display:block}
+  .bairro-name{font-family:'DM Serif Display',serif;font-size:1.4rem;margin-bottom:1rem}
+  .stat-row{display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border)}
+  .stat-row:last-child{border:none}
+  .stat-lbl{font-size:.8rem;color:var(--muted)}
+  .stat-val{font-weight:500;font-size:.95rem}
+  .risk-tag{display:inline-block;padding:.25rem .75rem;border-radius:100px;font-size:.8rem;font-weight:500;margin-top:.75rem}
+  .risk-tag.baixo{background:#E8F5EE;color:var(--green)}
+  .risk-tag.medio{background:#FDF3E7;color:var(--amber)}
+  .risk-tag.alto{background:#F2E8E6;color:var(--red)}
+  .risk-tag.critico{background:#7B0000;color:white}
+  .risk-tag.sem_dados{background:#F5F5F5;color:#999}
+
+  /* Legenda */
+  .legend{margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)}
+  .legend-title{font-size:.75rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem}
+  .legend-item{display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem;font-size:.82rem}
+  .legend-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+
+  /* Stats gerais */
+  .summary{background:var(--paper);border-radius:10px;padding:1rem;margin-bottom:1rem}
+  .summary-title{font-size:.75rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem}
+  .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+  .summary-item{text-align:center;background:var(--card);border-radius:8px;padding:.6rem}
+  .summary-num{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--red)}
+  .summary-lbl{font-size:.7rem;color:var(--muted)}
+
+  /* Loading */
+  .loading-msg{text-align:center;padding:2rem;color:var(--muted);font-size:.85rem}
+  .api-warn{background:#FDF3E7;border:1px solid var(--amber);border-radius:8px;padding:.6rem .9rem;font-size:.75rem;color:var(--amber);margin-bottom:1rem;display:none}
+
+  /* Hint */
+  .hint{background:var(--paper);border-radius:8px;padding:.75rem;font-size:.78rem;color:var(--muted);line-height:1.6;margin-bottom:1rem}
+
+  @media(max-width:700px){
+    .panel{width:100%;top:auto;bottom:0;height:40vh;border-left:none;border-top:1px solid var(--border)}
+    #map{height:60vh}
+  }
 </style>
 </head>
 <body>
 
+<nav>
+  <a href="index.html" class="nav-logo">🦟 DengueAlert</a>
+  <a href="index.html" class="nav-back">← Voltar</a>
+</nav>
+
 <div id="map"></div>
 
-<div class="legend">
-<b>Risco</b><br>
-🟢 Baixo<br>
-🟡 Médio<br>
-🔴 Alto
+<div class="panel">
+  <div class="panel-header">
+    <div class="panel-title">Mapa por Bairro</div>
+    <div class="panel-sub">Casos confirmados 2013–2024 · Prefeitura do Recife</div>
+  </div>
+  <div class="panel-body">
+    <div class="api-warn" id="apiWarn">⚠️ API offline. Rode: <code>python src/api.py</code></div>
+
+    <div id="loadingMsg" class="loading-msg">⏳ Carregando dados...</div>
+
+    <div id="summaryBox" style="display:none">
+      <div class="summary">
+        <div class="summary-title">Resumo geral</div>
+        <div class="summary-grid">
+          <div class="summary-item"><div class="summary-num" id="sumTotal">—</div><div class="summary-lbl">casos totais</div></div>
+          <div class="summary-item"><div class="summary-num" id="sumBairros">—</div><div class="summary-lbl">bairros</div></div>
+        </div>
+      </div>
+
+      <div class="hint">👆 Clique em um bairro para ver os detalhes.</div>
+
+      <div class="bairro-card" id="bairroCard">
+        <div class="bairro-name" id="bairroNome">—</div>
+        <div class="stat-row"><span class="stat-lbl">Casos confirmados</span><span class="stat-val" id="bairroCasos">—</span></div>
+        <div class="stat-row"><span class="stat-lbl">% do total da cidade</span><span class="stat-val" id="bairroPerc">—</span></div>
+        <div class="stat-row"><span class="stat-lbl">Nível de risco histórico</span><span class="stat-val"><span id="bairroRisk" class="risk-tag">—</span></span></div>
+      </div>
+
+      <div class="legend">
+        <div class="legend-title">Legenda — casos acumulados</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#CCCCCC"></div>Sem dados</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#2A7A4B"></div>Baixo (< 300 casos)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#D97B2A"></div>Médio (300–1.000)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#C8382A"></div>Alto (1.000–2.000)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#7B0000"></div>Crítico (> 2.000)</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
 <script>
-const map = L.map('map').setView([-8.05, -34.9], 11);
+const map = L.map('map').setView([-8.05, -34.9], 12);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '&copy; OpenStreetMap'
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '© OpenStreetMap © CARTO',
+  maxZoom: 19
 }).addTo(map);
 
-// 🎨 estilo direto da API
+let geojsonLayer = null;
+let lastSelected = null;
+
 function estilo(feature) {
   return {
-    fillColor: feature.properties.cor,
-    weight: 1,
-    color: "#333",
-    fillOpacity: 0.7
+    fillColor:   feature.properties.cor || '#CCCCCC',
+    weight:      1,
+    color:       '#888',
+    fillOpacity: 0.72,
   };
 }
 
-// 🖱️ interação
-function interacao(feature, layer) {
-  const p = feature.properties;
+function estiloDestaque(feature) {
+  return {
+    fillColor:   feature.properties.cor || '#CCCCCC',
+    weight:      2.5,
+    color:       '#222',
+    fillOpacity: 0.9,
+  };
+}
 
+function mostrarBairro(props) {
+  document.getElementById('bairroCard').classList.add('visible');
+  document.getElementById('bairroNome').textContent  = props.bairro_nome || props.EBAIRRNOME || '—';
+  document.getElementById('bairroCasos').textContent = (props.casos || 0).toLocaleString('pt-BR');
+  document.getElementById('bairroPerc').textContent  = (props.percentual || 0).toFixed(2) + '%';
+
+  const riskEl = document.getElementById('bairroRisk');
+  riskEl.textContent  = props.label || '—';
+  riskEl.className    = 'risk-tag ' + (props.risco || 'sem_dados');
+}
+
+function interacao(feature, layer) {
   layer.on({
-    click: () => {
-      layer.bindPopup(`
-        <b>${p.EBAIRRNOME}</b><br>
-        Casos: ${p.casos}<br>
-        Risco: ${p.risco}
-      `).openPopup();
+    mouseover: (e) => {
+      if (lastSelected !== layer) layer.setStyle(estiloDestaque(feature));
+    },
+    mouseout: (e) => {
+      if (lastSelected !== layer) layer.setStyle(estilo(feature));
+    },
+    click: (e) => {
+      if (lastSelected) lastSelected.setStyle(estilo(lastSelected.feature));
+      lastSelected = layer;
+      layer.setStyle(estiloDestaque(feature));
+      map.fitBounds(layer.getBounds(), {padding: [40, 40]});
+      mostrarBairro(feature.properties);
     }
   });
 }
 
-// 🚀 carregar mapa direto da API
-fetch("http://127.0.0.1:5000/mapa")
-  .then(res => res.json())
-  .then(data => {
-    L.geoJSON(data, {
+async function carregarMapa() {
+  try {
+    const res = await fetch('http://127.0.0.1:5000/mapa', {signal: AbortSignal.timeout(5000)});
+    if (!res.ok) throw new Error('API error');
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    geojsonLayer = L.geoJSON(data, {
       style: estilo,
       onEachFeature: interacao
     }).addTo(map);
-  })
-  .catch(err => console.error("Erro:", err));
-</script>
 
+    // Calcula totais para o resumo
+    const features = data.features || [];
+    const totalCasos   = features.reduce((s,f) => s + (f.properties.casos || 0), 0);
+    const totalBairros = features.filter(f => f.properties.casos > 0).length;
+
+    document.getElementById('loadingMsg').style.display  = 'none';
+    document.getElementById('summaryBox').style.display  = 'block';
+    document.getElementById('sumTotal').textContent   = totalCasos.toLocaleString('pt-BR');
+    document.getElementById('sumBairros').textContent = totalBairros;
+
+  } catch(e) {
+    console.warn('API offline:', e.message);
+    document.getElementById('loadingMsg').style.display = 'none';
+    document.getElementById('summaryBox').style.display = 'block';
+    document.getElementById('apiWarn').style.display    = 'block';
+    document.getElementById('sumTotal').textContent     = '—';
+    document.getElementById('sumBairros').textContent   = '—';
+  }
+}
+
+carregarMapa();
+</script>
 </body>
 </html>

@@ -17,104 +17,49 @@
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink)}
-
-  nav{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:1rem 3rem;
-    background:rgba(250,247,244,0.95);backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--border);
-    position:sticky;top:0;z-index:100;
-  }
+  nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 3rem;background:rgba(250,247,244,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
   .nav-logo{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--red);text-decoration:none}
   .nav-links{display:flex;gap:1.5rem;list-style:none}
   .nav-links a{text-decoration:none;color:var(--muted);font-size:0.85rem;font-weight:500;transition:color .2s}
   .nav-links a:hover,.nav-links a.active{color:var(--red)}
   .nav-cta{background:var(--red);color:white;padding:.45rem 1.1rem;border-radius:100px;text-decoration:none;font-size:0.82rem;font-weight:500}
-
   .dash-wrap{max-width:1200px;margin:0 auto;padding:2.5rem 2rem}
-
-  /* HEADER */
-  .dash-header{
-    display:flex;align-items:flex-start;justify-content:space-between;
-    flex-wrap:wrap;gap:1.5rem;margin-bottom:2.5rem;
-  }
   .dash-tag{font-size:.75rem;font-weight:500;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem}
   .dash-title{font-family:'DM Serif Display',serif;font-size:2rem;line-height:1.2;margin-bottom:.4rem}
-  .dash-sub{color:var(--muted);font-size:.9rem}
-
-  /* FILTER BAR */
-  .filter-bar{
-    background:var(--card);border:1px solid var(--border);
-    border-radius:14px;padding:1rem 1.5rem;
-    display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;
-    margin-bottom:2rem;
-  }
+  .dash-sub{color:var(--muted);font-size:.9rem;margin-bottom:2rem}
+  .filter-bar{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem 1.5rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:2rem;}
   .filter-label{font-size:.8rem;font-weight:500;color:var(--muted);white-space:nowrap}
   .year-pills{display:flex;gap:.5rem;flex-wrap:wrap}
-  .pill{
-    padding:.3rem .85rem;border-radius:100px;font-size:.8rem;font-weight:500;
-    border:1.5px solid var(--border);background:transparent;
-    color:var(--muted);cursor:pointer;transition:all .15s;
-  }
+  .pill{padding:.3rem .85rem;border-radius:100px;font-size:.8rem;font-weight:500;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;}
   .pill:hover{border-color:var(--red);color:var(--red)}
   .pill.active{background:var(--red);border-color:var(--red);color:white}
-  .filter-sep{width:1px;height:24px;background:var(--border)}
-
-  /* KPI STRIP */
   .kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
-  .kpi{
-    background:var(--card);border:1px solid var(--border);
-    border-radius:14px;padding:1.25rem 1.5rem;
-    transition:transform .2s,box-shadow .2s;
-  }
+  .kpi{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.25rem 1.5rem;transition:transform .2s,box-shadow .2s;}
   .kpi:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.07)}
   .kpi-label{font-size:.75rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem}
   .kpi-val{font-family:'DM Serif Display',serif;font-size:2rem;line-height:1;margin-bottom:.2rem}
-  .kpi-val.red{color:var(--red)} .kpi-val.green{color:var(--green)} .kpi-val.amber{color:var(--amber)}
+  .kpi-val.red{color:var(--red)}.kpi-val.green{color:var(--green)}.kpi-val.amber{color:var(--amber)}
   .kpi-change{font-size:.78rem;color:var(--muted)}
-
-  /* CHART GRID */
   .chart-grid{display:grid;gap:1.5rem}
   .chart-row-2{grid-template-columns:1fr 1fr}
   .chart-row-3{grid-template-columns:2fr 1fr}
-
-  .chart-card{
-    background:var(--card);border:1px solid var(--border);
-    border-radius:16px;padding:1.5rem;
-  }
-  .chart-card-header{
-    display:flex;align-items:flex-start;justify-content:space-between;
-    margin-bottom:1.25rem;gap:1rem;
-  }
+  .chart-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;}
+  .chart-card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem;gap:1rem;}
   .chart-card-title{font-weight:500;font-size:.95rem;margin-bottom:.2rem}
   .chart-card-sub{font-size:.78rem;color:var(--muted)}
-  .chart-badge{
-    padding:.2rem .65rem;border-radius:100px;
-    font-size:.72rem;font-weight:500;white-space:nowrap;
-  }
+  .chart-badge{padding:.2rem .65rem;border-radius:100px;font-size:.72rem;font-weight:500;white-space:nowrap;}
   .badge-red{background:var(--red-light);color:var(--red)}
   .badge-green{background:var(--green-light);color:var(--green)}
   .badge-amber{background:var(--amber-light);color:var(--amber)}
-
   .chart-area{width:100%}
-
-  /* INSIGHT STRIP */
   .insights{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem}
-  .insight{
-    background:var(--card);border:1px solid var(--border);
-    border-radius:14px;padding:1.25rem;
-    border-left:3px solid var(--border);
-  }
-  .insight.red{border-left-color:var(--red)}
-  .insight.green{border-left-color:var(--green)}
-  .insight.amber{border-left-color:var(--amber)}
+  .insight{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.25rem;border-left:3px solid var(--border);}
+  .insight.red{border-left-color:var(--red)}.insight.green{border-left-color:var(--green)}.insight.amber{border-left-color:var(--amber)}
   .insight-title{font-weight:500;font-size:.85rem;margin-bottom:.4rem}
   .insight-text{font-size:.8rem;color:var(--muted);line-height:1.6}
-
-  /* PLOTLY overrides */
-  .js-plotly-plot .plotly .modebar{opacity:.4!important}
-  .js-plotly-plot .plotly .modebar:hover{opacity:1!important}
-
+  /* Loading state */
+  .loading{text-align:center;padding:4rem;color:var(--muted);font-size:.9rem}
+  .api-warning{background:#FDF3E7;border:1px solid var(--amber);border-radius:10px;padding:.75rem 1rem;font-size:.82rem;color:var(--amber);margin-bottom:1.5rem;display:none;}
   @media(max-width:900px){
     .kpi-strip{grid-template-columns:1fr 1fr}
     .chart-row-2,.chart-row-3{grid-template-columns:1fr}
@@ -138,449 +83,288 @@
 </nav>
 
 <div class="dash-wrap">
+  <div class="dash-tag">Análise epidemiológica</div>
+  <h1 class="dash-title">Dashboard — Dengue em Recife</h1>
+  <p class="dash-sub">Dados semanais de 2015 a 2024 · Fonte: InfoDengue API</p>
 
-  <div class="dash-header">
-    <div class="dash-title-group">
-      <div class="dash-tag">Análise epidemiológica</div>
-      <h1 class="dash-title">Dashboard — Dengue em Recife</h1>
-      <p class="dash-sub">Dados semanais de 2015 a 2024 · Fonte: InfoDengue API</p>
-    </div>
+  <div class="api-warning" id="apiWarning">
+    ⚠️ API offline — exibindo dados de demonstração. Para dados reais, rode: <code>python src/api.py</code>
   </div>
 
-  <!-- FILTER -->
   <div class="filter-bar">
     <span class="filter-label">Período:</span>
     <div class="year-pills" id="yearPills"></div>
-    <div class="filter-sep"></div>
-    <span class="filter-label" id="filterStatus">Exibindo todos os anos</span>
+    <div style="width:1px;height:24px;background:var(--border)"></div>
+    <span class="filter-label" id="filterStatus">Carregando...</span>
   </div>
 
-  <!-- KPIs -->
   <div class="kpi-strip">
-    <div class="kpi">
-      <div class="kpi-label">Total de casos (período)</div>
-      <div class="kpi-val red" id="kpiTotal">—</div>
-      <div class="kpi-change">estimados pelo modelo</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Pico semanal</div>
-      <div class="kpi-val amber" id="kpiPico">—</div>
-      <div class="kpi-change" id="kpiPicoDate">semana mais crítica</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Semanas em alerta alto</div>
-      <div class="kpi-val red" id="kpiAlerta">—</div>
-      <div class="kpi-change">nível 3 ou 4</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Temp. média do período</div>
-      <div class="kpi-val green" id="kpiTemp">—</div>
-      <div class="kpi-change">média histórica Recife</div>
-    </div>
+    <div class="kpi"><div class="kpi-label">Total de casos</div><div class="kpi-val red" id="kpiTotal">—</div><div class="kpi-change">estimados pelo modelo</div></div>
+    <div class="kpi"><div class="kpi-label">Pico semanal</div><div class="kpi-val amber" id="kpiPico">—</div><div class="kpi-change" id="kpiPicoDate">semana mais crítica</div></div>
+    <div class="kpi"><div class="kpi-label">Semanas em alerta alto</div><div class="kpi-val red" id="kpiAlerta">—</div><div class="kpi-change">nível 3 ou 4</div></div>
+    <div class="kpi"><div class="kpi-label">Temp. média</div><div class="kpi-val green" id="kpiTemp">—</div><div class="kpi-change">média histórica Recife</div></div>
   </div>
 
-  <!-- ROW 1: timeline -->
   <div class="chart-grid" style="margin-bottom:1.5rem">
     <div class="chart-card">
       <div class="chart-card-header">
-        <div>
-          <div class="chart-card-title">Casos estimados por semana</div>
-          <div class="chart-card-sub">Série temporal com nível de alerta colorido</div>
-        </div>
+        <div><div class="chart-card-title">Casos estimados por semana</div><div class="chart-card-sub">Série temporal 2015–2024</div></div>
         <span class="chart-badge badge-red">2015 – 2024</span>
       </div>
       <div class="chart-area" id="chartTimeline" style="height:280px"></div>
     </div>
   </div>
 
-  <!-- ROW 2: sazonalidade + correlação -->
   <div class="chart-grid chart-row-2" style="margin-bottom:1.5rem">
     <div class="chart-card">
-      <div class="chart-card-header">
-        <div>
-          <div class="chart-card-title">Sazonalidade mensal</div>
-          <div class="chart-card-sub">Média de casos por mês ao longo dos anos</div>
-        </div>
-        <span class="chart-badge badge-amber">Sazonal</span>
-      </div>
+      <div class="chart-card-header"><div><div class="chart-card-title">Sazonalidade mensal</div><div class="chart-card-sub">Média de casos por mês</div></div><span class="chart-badge badge-amber">Sazonal</span></div>
       <div class="chart-area" id="chartSazon" style="height:240px"></div>
     </div>
     <div class="chart-card">
-      <div class="chart-card-header">
-        <div>
-          <div class="chart-card-title">Temperatura vs Casos</div>
-          <div class="chart-card-sub">Dispersão semanal colorida por umidade</div>
-        </div>
-        <span class="chart-badge badge-green">Correlação</span>
-      </div>
+      <div class="chart-card-header"><div><div class="chart-card-title">Temperatura vs Casos</div><div class="chart-card-sub">Dispersão colorida por umidade</div></div><span class="chart-badge badge-green">Correlação</span></div>
       <div class="chart-area" id="chartScatter" style="height:240px"></div>
     </div>
   </div>
 
-  <!-- ROW 3: níveis + modelos -->
   <div class="chart-grid chart-row-3" style="margin-bottom:1.5rem">
     <div class="chart-card">
-      <div class="chart-card-header">
-        <div>
-          <div class="chart-card-title">Comparativo dos modelos ML</div>
-          <div class="chart-card-sub">MAE e R² — Regressão Linear, Random Forest, XGBoost</div>
-        </div>
-        <span class="chart-badge badge-green">R² > 0.95</span>
-      </div>
+      <div class="chart-card-header"><div><div class="chart-card-title">Comparativo dos modelos ML</div><div class="chart-card-sub">MAE e R² — LR, RF, XGBoost</div></div><span class="chart-badge badge-green">R² > 0.95</span></div>
       <div class="chart-area" id="chartModelos" style="height:240px"></div>
     </div>
     <div class="chart-card">
-      <div class="chart-card-header">
-        <div>
-          <div class="chart-card-title">Níveis de alerta</div>
-          <div class="chart-card-sub">Distribuição no período</div>
-        </div>
-      </div>
+      <div class="chart-card-header"><div><div class="chart-card-title">Níveis de alerta</div><div class="chart-card-sub">Distribuição no período</div></div></div>
       <div class="chart-area" id="chartNivel" style="height:240px"></div>
     </div>
   </div>
 
-  <!-- ROW 4: casos por ano + importância features -->
   <div class="chart-grid chart-row-2" style="margin-bottom:2rem">
     <div class="chart-card">
-      <div class="chart-card-header">
-        <div>
-          <div class="chart-card-title">Total de casos por ano</div>
-          <div class="chart-card-sub">Soma anual dos casos estimados</div>
-        </div>
-        <span class="chart-badge badge-red">Anual</span>
-      </div>
+      <div class="chart-card-header"><div><div class="chart-card-title">Total de casos por ano</div><div class="chart-card-sub">Soma anual dos casos estimados</div></div><span class="chart-badge badge-red">Anual</span></div>
       <div class="chart-area" id="chartAnual" style="height:240px"></div>
     </div>
     <div class="chart-card">
-      <div class="chart-card-header">
-        <div>
-          <div class="chart-card-title">Importância das features</div>
-          <div class="chart-card-sub">XGBoost — contribuição de cada variável</div>
-        </div>
-        <span class="chart-badge badge-green">XGBoost</span>
-      </div>
+      <div class="chart-card-header"><div><div class="chart-card-title">Importância das features</div><div class="chart-card-sub">XGBoost — contribuição de cada variável</div></div><span class="chart-badge badge-green">XGBoost</span></div>
       <div class="chart-area" id="chartFeatures" style="height:240px"></div>
     </div>
   </div>
 
-  <!-- INSIGHTS -->
   <div class="insights">
-    <div class="insight red">
-      <div class="insight-title">🔴 Pico histórico em 2016</div>
-      <div class="insight-text">O maior surto registrado ocorreu em fevereiro de 2016, com mais de 2.000 casos estimados em uma única semana — coincidindo com o período pós-chuvoso mais intenso da década.</div>
-    </div>
-    <div class="insight amber">
-      <div class="insight-title">🌧️ Sazonalidade clara</div>
-      <div class="insight-text">Os meses de janeiro a abril concentram consistentemente os maiores picos. O período seco (julho–setembro) mantém casos abaixo de 200/semana na maioria dos anos.</div>
-    </div>
-    <div class="insight green">
-      <div class="insight-title">🤖 Lag features dominam</div>
-      <div class="insight-text">Os casos das semanas anteriores (lag 1, 2, 4) respondem por mais de 70% da importância no XGBoost, confirmando a forte autocorrelação temporal da dengue.</div>
-    </div>
+    <div class="insight red"><div class="insight-title">🔴 Pico histórico em 2016</div><div class="insight-text">O maior surto ocorreu em fevereiro de 2016, com mais de 2.000 casos estimados em uma única semana — coincidindo com o período pós-chuvoso mais intenso da década.</div></div>
+    <div class="insight amber"><div class="insight-title">🌧️ Sazonalidade clara</div><div class="insight-text">Os meses de janeiro a abril concentram os maiores picos. O período seco (julho–setembro) mantém casos abaixo de 200/semana na maioria dos anos.</div></div>
+    <div class="insight green"><div class="insight-title">🤖 Lag features dominam</div><div class="insight-text">Os casos das semanas anteriores (lag 1, 2, 4) respondem por mais de 70% da importância no XGBoost, confirmando a forte autocorrelação temporal.</div></div>
   </div>
-
 </div>
 
 <script>
-// ─── DATA GENERATION ───────────────────────────────────────────────────────
-// Simulate realistic weekly dengue data for Recife 2015-2024
-function generateData() {
+// ─── DADOS DE FALLBACK (usados quando API está offline) ──────────────────
+function gerarDemoData() {
   const rows = [];
   const seed = [
-    {yr:2015, peaks:[{w:5,v:1900},{w:8,v:1400}], base:350},
-    {yr:2016, peaks:[{w:6,v:2100},{w:9,v:1600},{w:14,v:800}], base:400},
-    {yr:2017, peaks:[{w:7,v:550}], base:120},
-    {yr:2018, peaks:[{w:5,v:600},{w:8,v:400}], base:150},
-    {yr:2019, peaks:[{w:6,v:700},{w:10,v:500}], base:180},
-    {yr:2020, peaks:[{w:5,v:450}], base:130},
-    {yr:2021, peaks:[{w:7,v:950},{w:12,v:600}], base:200},
-    {yr:2022, peaks:[{w:6,v:350}], base:100},
-    {yr:2023, peaks:[{w:5,v:450}], base:120},
-    {yr:2024, peaks:[{w:7,v:1000},{w:10,v:700}], base:220},
+    {yr:2015,peaks:[{w:5,v:1900},{w:8,v:1400}],base:350},
+    {yr:2016,peaks:[{w:6,v:2100},{w:9,v:1600}],base:400},
+    {yr:2017,peaks:[{w:7,v:550}],base:120},
+    {yr:2018,peaks:[{w:5,v:600}],base:150},
+    {yr:2019,peaks:[{w:6,v:700}],base:180},
+    {yr:2020,peaks:[{w:5,v:450}],base:130},
+    {yr:2021,peaks:[{w:7,v:950}],base:200},
+    {yr:2022,peaks:[{w:6,v:350}],base:100},
+    {yr:2023,peaks:[{w:5,v:450}],base:120},
+    {yr:2024,peaks:[{w:7,v:1000}],base:220},
   ];
-
-  seed.forEach(({yr, peaks, base}) => {
-    for (let w = 1; w <= 52; w++) {
-      let cases = base * (0.5 + 0.5 * Math.random());
-      peaks.forEach(p => {
-        const dist = Math.abs(w - p.w);
-        cases += p.v * Math.exp(-dist * dist / 8);
-      });
-      cases = Math.round(cases);
-      const nivel = cases < 100 ? 1 : cases < 300 ? 2 : cases < 700 ? 3 : 4;
-      const temp = 26 + 2 * Math.sin((w / 52) * 2 * Math.PI + 0.5) + (Math.random() - 0.5);
-      const umid = 78 + 10 * Math.cos((w / 52) * 2 * Math.PI) + (Math.random() - 0.5) * 6;
-      const date = new Date(yr, 0, 1 + (w - 1) * 7);
-      rows.push({
-        date: date.toISOString().slice(0, 10),
-        yr, w, cases, nivel,
-        temp: +temp.toFixed(1),
-        umid: +umid.toFixed(1),
-        mes: date.getMonth() + 1
-      });
+  seed.forEach(({yr,peaks,base}) => {
+    for (let w=1;w<=52;w++) {
+      let cases = base*(0.5+0.5*Math.random());
+      peaks.forEach(p=>{const d=Math.abs(w-p.w);cases+=p.v*Math.exp(-d*d/8);});
+      cases=Math.round(cases);
+      const nivel=cases<100?1:cases<300?2:cases<700?3:4;
+      const temp=26+2*Math.sin((w/52)*2*Math.PI+0.5)+(Math.random()-0.5);
+      const umid=78+10*Math.cos((w/52)*2*Math.PI)+(Math.random()-0.5)*6;
+      const date=new Date(yr,0,1+(w-1)*7);
+      rows.push({date:date.toISOString().slice(0,10),yr,w,cases,nivel,temp:+temp.toFixed(1),umid:+umid.toFixed(1),mes:date.getMonth()+1});
     }
   });
   return rows;
 }
 
+// ─── ESTADO GLOBAL ───────────────────────────────────────────────────────
 let ALL_DATA = [];
+let YEARS = [];
+let selectedYears = new Set();
 
-async function carregarDados() {
-  const res = await fetch("http://127.0.0.1:5000/historico");
-  const data = await res.json();
-
-  ALL_DATA = data.map(d => {
-    const date = new Date(d.data);
-
-    return {
-      date: d.data,
-      yr: date.getFullYear(),
-      w: getSemana(date),
-      cases: d.casos_est,
-      nivel: classificarNivel(d.casos_est),
-      temp: d.tempmed,
-      umid: d.umidmed,
-      mes: date.getMonth() + 1
-    };
-  });
-
-  initDashboard();
-}
-
-function getSemana(date) {
-  const firstDay = new Date(date.getFullYear(), 0, 1);
-  const pastDays = (date - firstDay) / 86400000;
-  return Math.ceil((pastDays + firstDay.getDay() + 1) / 7);
-}
-
-function classificarNivel(casos) {
-  if (casos < 100) return 1;
-  if (casos < 300) return 2;
-  if (casos < 700) return 3;
-  return 4;
-}
-
-const YEARS = [...new Set(ALL_DATA.map(d => d.yr))];
-let selectedYears = new Set(YEARS);
-
-// ─── PLOTLY CONFIG ──────────────────────────────────────────────────────────
 const LAYOUT_BASE = {
-  paper_bgcolor: 'rgba(0,0,0,0)',
-  plot_bgcolor:  'rgba(0,0,0,0)',
-  margin: {t: 10, r: 16, b: 40, l: 50},
-  font: {family: "'DM Sans', sans-serif", size: 11, color: '#6B5E58'},
-  xaxis: {showgrid: false, zeroline: false, color: '#6B5E58'},
-  yaxis: {gridcolor: '#E8E0DA', zeroline: false, color: '#6B5E58'},
-  showlegend: false,
+  paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',
+  margin:{t:10,r:16,b:40,l:50},
+  font:{family:"'DM Sans', sans-serif",size:11,color:'#6B5E58'},
+  xaxis:{showgrid:false,zeroline:false,color:'#6B5E58'},
+  yaxis:{gridcolor:'#E8E0DA',zeroline:false,color:'#6B5E58'},
+  showlegend:false,
 };
-const CFG = {responsive: true, displayModeBar: false};
+const CFG={responsive:true,displayModeBar:false};
 
-// ─── YEAR PILLS ─────────────────────────────────────────────────────────────
-const pillsEl = document.getElementById('yearPills');
-['Todos', ...YEARS].forEach(y => {
-  const btn = document.createElement('button');
-  btn.className = 'pill' + (y === 'Todos' ? ' active' : '');
-  btn.textContent = y;
-  btn.onclick = () => toggleYear(y, btn);
-  pillsEl.appendChild(btn);
-});
+// ─── CARREGAR DADOS DA API (com fallback) ────────────────────────────────
+async function carregarDados() {
+  try {
+    const res = await fetch('http://127.0.0.1:5000/historico', {signal: AbortSignal.timeout(3000)});
+    if (!res.ok) throw new Error('API error');
+    const raw = await res.json();
+
+    ALL_DATA = raw.map(d => {
+      const date = new Date(d.data);
+      return {
+        date: d.data,
+        yr:   date.getFullYear(),
+        w:    Math.ceil((date - new Date(date.getFullYear(),0,1)) / 604800000) + 1,
+        cases: d.casos_est || 0,
+        nivel: d.nivel || (d.casos_est < 100 ? 1 : d.casos_est < 300 ? 2 : d.casos_est < 700 ? 3 : 4),
+        temp:  d.tempmed || 27,
+        umid:  d.umidmed || 78,
+        mes:   date.getMonth() + 1,
+      };
+    }).filter(d => d.cases != null);
+
+    console.log('✅ Dados carregados da API:', ALL_DATA.length, 'semanas');
+  } catch(e) {
+    console.warn('API offline, usando dados de demo:', e.message);
+    document.getElementById('apiWarning').style.display = 'block';
+    ALL_DATA = gerarDemoData();
+  }
+
+  // FIX: calcular YEARS e selectedYears DEPOIS de carregar ALL_DATA
+  YEARS = [...new Set(ALL_DATA.map(d => d.yr))].sort();
+  selectedYears = new Set(YEARS);
+  initUI();
+}
+
+// ─── INICIALIZAR UI ──────────────────────────────────────────────────────
+function initUI() {
+  // Pills
+  const pillsEl = document.getElementById('yearPills');
+  ['Todos', ...YEARS].forEach((y, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'pill' + (i === 0 ? ' active' : '');
+    btn.textContent = y;
+    btn.onclick = () => toggleYear(y, btn);
+    pillsEl.appendChild(btn);
+  });
+  render();
+}
 
 function toggleYear(y, btn) {
   if (y === 'Todos') {
     selectedYears = new Set(YEARS);
-    document.querySelectorAll('.pill').forEach((p,i) => p.classList.toggle('active', i === 0));
+    document.querySelectorAll('.pill').forEach((p,i) => p.classList.toggle('active', i===0));
   } else {
-    document.querySelector('.pill').classList.remove('active'); // deactivate "Todos"
-    if (selectedYears.has(y)) {
-      selectedYears.delete(y);
-      btn.classList.remove('active');
-      if (selectedYears.size === 0) { selectedYears = new Set(YEARS); document.querySelector('.pill').classList.add('active'); }
-    } else {
-      selectedYears.add(y);
-      btn.classList.add('active');
-      if (selectedYears.size === YEARS.length) document.querySelector('.pill').classList.add('active');
-    }
+    document.querySelector('.pill').classList.remove('active');
+    selectedYears.has(y) ? selectedYears.delete(y) : selectedYears.add(y);
+    btn.classList.toggle('active', selectedYears.has(y));
+    if (selectedYears.size === 0) { selectedYears = new Set(YEARS); document.querySelector('.pill').classList.add('active'); }
+    if (selectedYears.size === YEARS.length) document.querySelector('.pill').classList.add('active');
   }
   render();
 }
 
-// ─── HELPERS ────────────────────────────────────────────────────────────────
 function filtered() { return ALL_DATA.filter(d => selectedYears.has(d.yr)); }
 
+// ─── KPIs ────────────────────────────────────────────────────────────────
 function updateKPIs(data) {
-  const total = data.reduce((s, d) => s + d.cases, 0);
-  const peak  = data.reduce((a, b) => a.cases > b.cases ? a : b);
+  if (!data.length) return;
+  const total = data.reduce((s,d) => s+d.cases, 0);
+  const peak  = data.reduce((a,b) => a.cases>b.cases?a:b);
   const high  = data.filter(d => d.nivel >= 3).length;
-  const avgT  = (data.reduce((s, d) => s + d.temp, 0) / data.length).toFixed(1);
+  const avgT  = (data.reduce((s,d) => s+(d.temp||0),0)/data.length).toFixed(1);
   document.getElementById('kpiTotal').textContent    = total.toLocaleString('pt-BR');
   document.getElementById('kpiPico').textContent     = peak.cases.toLocaleString('pt-BR');
   document.getElementById('kpiPicoDate').textContent = peak.date;
   document.getElementById('kpiAlerta').textContent   = high;
-  document.getElementById('kpiTemp').textContent     = avgT + '°C';
-
-  const yrs = [...selectedYears].sort();
-  const statusEl = document.getElementById('filterStatus');
-  if (selectedYears.size === YEARS.length) statusEl.textContent = 'Exibindo todos os anos (2015–2024)';
-  else statusEl.textContent = 'Exibindo: ' + yrs.join(', ');
+  document.getElementById('kpiTemp').textContent     = avgT+'°C';
+  document.getElementById('filterStatus').textContent =
+    selectedYears.size===YEARS.length ? 'Exibindo todos os anos ('+YEARS[0]+'–'+YEARS[YEARS.length-1]+')' :
+    'Exibindo: '+[...selectedYears].sort().join(', ');
 }
 
-// ─── CHARTS ─────────────────────────────────────────────────────────────────
+// ─── GRÁFICOS ────────────────────────────────────────────────────────────
 function drawTimeline(data) {
-  const colors = data.map(d =>
-    d.nivel === 1 ? '#2A7A4B' : d.nivel === 2 ? '#D97B2A' : d.nivel === 3 ? '#E05A20' : '#C8382A'
-  );
-  Plotly.newPlot('chartTimeline', [{
-    x: data.map(d => d.date),
-    y: data.map(d => d.cases),
-    type: 'scatter', mode: 'lines',
-    line: {color: '#C8382A', width: 1.5},
-    fill: 'tozeroy', fillcolor: 'rgba(200,56,42,0.08)',
-    hovertemplate: '<b>%{x}</b><br>Casos: %{y}<extra></extra>',
-  }], {
-    ...LAYOUT_BASE,
-    margin: {t: 10, r: 16, b: 40, l: 56},
-    yaxis: {...LAYOUT_BASE.yaxis, title: {text: 'Casos est.', font: {size: 10}}},
-  }, CFG);
+  Plotly.newPlot('chartTimeline',[{
+    x:data.map(d=>d.date),y:data.map(d=>d.cases),
+    type:'scatter',mode:'lines',
+    line:{color:'#C8382A',width:1.5},
+    fill:'tozeroy',fillcolor:'rgba(200,56,42,0.08)',
+    hovertemplate:'<b>%{x}</b><br>Casos: %{y}<extra></extra>',
+  }],{...LAYOUT_BASE,margin:{t:10,r:16,b:40,l:56},yaxis:{...LAYOUT_BASE.yaxis,title:{text:'Casos est.',font:{size:10}}}},CFG);
 }
 
 function drawSazonalidade(data) {
-  const meses = Array.from({length: 12}, (_, i) => i + 1);
-  const nomes = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-  const medias = meses.map(m => {
-    const vals = data.filter(d => d.mes === m).map(d => d.cases);
-    return vals.length ? Math.round(vals.reduce((a,b) => a+b,0) / vals.length) : 0;
+  const nomes=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const medias=Array.from({length:12},(_,i)=>{
+    const v=data.filter(d=>d.mes===i+1).map(d=>d.cases);
+    return v.length?Math.round(v.reduce((a,b)=>a+b,0)/v.length):0;
   });
-  const colors = medias.map(v => v > 600 ? '#C8382A' : v > 300 ? '#D97B2A' : v > 150 ? '#E8A84A' : '#2A7A4B');
-  Plotly.newPlot('chartSazon', [{
-    x: nomes, y: medias,
-    type: 'bar', marker: {color: colors, cornerradius: 4},
-    hovertemplate: '<b>%{x}</b><br>Média: %{y} casos<extra></extra>',
-  }], {
-    ...LAYOUT_BASE,
-    margin: {t: 10, r: 12, b: 36, l: 52},
-    yaxis: {...LAYOUT_BASE.yaxis, title: {text: 'Média casos', font: {size: 10}}},
-  }, CFG);
+  const colors=medias.map(v=>v>600?'#C8382A':v>300?'#D97B2A':v>150?'#E8A84A':'#2A7A4B');
+  Plotly.newPlot('chartSazon',[{x:nomes,y:medias,type:'bar',marker:{color:colors},hovertemplate:'<b>%{x}</b><br>Média: %{y} casos<extra></extra>'}],
+    {...LAYOUT_BASE,margin:{t:10,r:12,b:36,l:52},yaxis:{...LAYOUT_BASE.yaxis,title:{text:'Média casos',font:{size:10}}}},CFG);
 }
 
 function drawScatter(data) {
-  const sample = data.filter((_, i) => i % 2 === 0);
-  Plotly.newPlot('chartScatter', [{
-    x: sample.map(d => d.temp),
-    y: sample.map(d => d.cases),
-    mode: 'markers',
-    type: 'scatter',
-    marker: {
-      color: sample.map(d => d.umid),
-      colorscale: [[0,'#3B8BD4'],[0.5,'#D97B2A'],[1,'#C8382A']],
-      size: 5, opacity: 0.7,
-      colorbar: {title: {text:'Umid%',font:{size:9}}, thickness: 10, len: 0.7},
-    },
-    hovertemplate: 'Temp: %{x}°C<br>Casos: %{y}<extra></extra>',
-  }], {
-    ...LAYOUT_BASE,
-    margin: {t: 10, r: 70, b: 40, l: 52},
-    xaxis: {...LAYOUT_BASE.xaxis, title: {text: 'Temperatura (°C)', font: {size: 10}}},
-    yaxis: {...LAYOUT_BASE.yaxis, title: {text: 'Casos', font: {size: 10}}},
-  }, CFG);
+  const s=data.filter((_,i)=>i%2===0);
+  Plotly.newPlot('chartScatter',[{
+    x:s.map(d=>d.temp),y:s.map(d=>d.cases),mode:'markers',type:'scatter',
+    marker:{color:s.map(d=>d.umid),colorscale:[[0,'#3B8BD4'],[0.5,'#D97B2A'],[1,'#C8382A']],size:5,opacity:0.7,
+      colorbar:{title:{text:'Umid%',font:{size:9}},thickness:10,len:0.7}},
+    hovertemplate:'Temp: %{x}°C<br>Casos: %{y}<extra></extra>',
+  }],{...LAYOUT_BASE,margin:{t:10,r:70,b:40,l:52},
+    xaxis:{...LAYOUT_BASE.xaxis,title:{text:'Temperatura (°C)',font:{size:10}}},
+    yaxis:{...LAYOUT_BASE.yaxis,title:{text:'Casos',font:{size:10}}}},CFG);
 }
 
 function drawModelos() {
-  const modelos = ['Regressão\nLinear', 'Random\nForest', 'XGBoost'];
-  const mae     = [21.9, 17.5, 14.3];
-  const r2      = [0.976, 0.958, 0.964];
-  const colors  = ['#6B5E58', '#D97B2A', '#C8382A'];
-
-  Plotly.newPlot('chartModelos', [
-    {
-      x: modelos, y: mae, name: 'MAE (casos)',
-      type: 'bar', yaxis: 'y',
-      marker: {color: colors, opacity: 0.85, cornerradius: 4},
-      hovertemplate: '<b>%{x}</b><br>MAE: %{y} casos<extra></extra>',
-    },
-    {
-      x: modelos, y: r2, name: 'R²',
-      type: 'scatter', mode: 'markers+lines',
-      yaxis: 'y2',
-      marker: {color: '#2A7A4B', size: 10},
-      line: {color: '#2A7A4B', width: 2, dash: 'dot'},
-      hovertemplate: '<b>%{x}</b><br>R²: %{y:.3f}<extra></extra>',
-    }
-  ], {
-    ...LAYOUT_BASE,
-    margin: {t: 20, r: 56, b: 50, l: 52},
-    showlegend: true,
-    legend: {x: 0.02, y: 0.98, font: {size: 10}},
-    yaxis: {...LAYOUT_BASE.yaxis, title: {text: 'MAE', font: {size: 10}}},
-    yaxis2: {
-      overlaying: 'y', side: 'right',
-      range: [0.9, 1.0], showgrid: false,
-      title: {text: 'R²', font: {size: 10}},
-      color: '#2A7A4B',
-    },
-  }, CFG);
+  const modelos=['Regressão\nLinear','Random\nForest','XGBoost'];
+  const mae=[21.9,17.5,14.3];const r2=[0.976,0.958,0.964];
+  const colors=['#6B5E58','#D97B2A','#C8382A'];
+  Plotly.newPlot('chartModelos',[
+    {x:modelos,y:mae,name:'MAE (casos)',type:'bar',yaxis:'y',marker:{color:colors,opacity:0.85},hovertemplate:'<b>%{x}</b><br>MAE: %{y} casos<extra></extra>'},
+    {x:modelos,y:r2,name:'R²',type:'scatter',mode:'markers+lines',yaxis:'y2',
+      marker:{color:'#2A7A4B',size:10},line:{color:'#2A7A4B',width:2,dash:'dot'},
+      hovertemplate:'<b>%{x}</b><br>R²: %{y:.3f}<extra></extra>'}
+  ],{...LAYOUT_BASE,margin:{t:20,r:56,b:50,l:52},showlegend:true,
+    legend:{x:0.02,y:0.98,font:{size:10}},
+    yaxis:{...LAYOUT_BASE.yaxis,title:{text:'MAE',font:{size:10}}},
+    yaxis2:{overlaying:'y',side:'right',range:[0.9,1.0],showgrid:false,
+      title:{text:'R²',font:{size:10}},color:'#2A7A4B'}},CFG);
 }
 
 function drawNivel(data) {
-  const counts = [1,2,3,4].map(n => data.filter(d => d.nivel === n).length);
-  Plotly.newPlot('chartNivel', [{
-    labels: ['Nível 1 Verde','Nível 2 Amarelo','Nível 3 Laranja','Nível 4 Vermelho'],
-    values: counts,
-    type: 'pie',
-    hole: 0.55,
-    marker: {colors: ['#2A7A4B','#D4C420','#D97B2A','#C8382A']},
-    textinfo: 'percent',
-    hovertemplate: '<b>%{label}</b><br>%{value} semanas (%{percent})<extra></extra>',
-    textfont: {size: 11},
-  }], {
-    ...LAYOUT_BASE,
-    margin: {t: 10, r: 10, b: 10, l: 10},
-    showlegend: true,
-    legend: {font: {size: 9}, orientation: 'v', x: -0.1},
-  }, CFG);
+  const counts=[1,2,3,4].map(n=>data.filter(d=>d.nivel===n).length);
+  Plotly.newPlot('chartNivel',[{
+    labels:['Nível 1 Verde','Nível 2 Amarelo','Nível 3 Laranja','Nível 4 Vermelho'],
+    values:counts,type:'pie',hole:0.55,
+    marker:{colors:['#2A7A4B','#D4C420','#D97B2A','#C8382A']},
+    textinfo:'percent',hovertemplate:'<b>%{label}</b><br>%{value} semanas<extra></extra>',
+  }],{...LAYOUT_BASE,margin:{t:10,r:10,b:10,l:10},showlegend:true,legend:{font:{size:9},x:-0.1}},CFG);
 }
 
 function drawAnual(data) {
-  const totals = YEARS.map(yr => ({
-    yr,
-    total: data.filter(d => d.yr === yr).reduce((s, d) => s + d.cases, 0)
-  })).filter(d => selectedYears.has(d.yr));
-
-  const colors = totals.map(d => d.total > 30000 ? '#C8382A' : d.total > 15000 ? '#D97B2A' : '#6B9BB5');
-
-  Plotly.newPlot('chartAnual', [{
-    x: totals.map(d => d.yr),
-    y: totals.map(d => d.total),
-    type: 'bar',
-    marker: {color: colors, cornerradius: 4},
-    hovertemplate: '<b>%{x}</b><br>Total: %{y:,.0f} casos<extra></extra>',
-  }], {
-    ...LAYOUT_BASE,
-    margin: {t: 10, r: 12, b: 40, l: 60},
-    xaxis: {...LAYOUT_BASE.xaxis, type: 'category'},
-    yaxis: {...LAYOUT_BASE.yaxis, title: {text: 'Total casos', font: {size: 10}}},
-  }, CFG);
+  const totals=YEARS.filter(yr=>selectedYears.has(yr))
+    .map(yr=>({yr,total:data.filter(d=>d.yr===yr).reduce((s,d)=>s+d.cases,0)}));
+  const colors=totals.map(d=>d.total>80000?'#C8382A':d.total>40000?'#D97B2A':'#6B9BB5');
+  Plotly.newPlot('chartAnual',[{
+    x:totals.map(d=>d.yr),y:totals.map(d=>d.total),type:'bar',
+    marker:{color:colors},hovertemplate:'<b>%{x}</b><br>Total: %{y:,.0f} casos<extra></extra>',
+  }],{...LAYOUT_BASE,margin:{t:10,r:12,b:40,l:60},xaxis:{...LAYOUT_BASE.xaxis,type:'category'},
+    yaxis:{...LAYOUT_BASE.yaxis,title:{text:'Total casos',font:{size:10}}}},CFG);
 }
 
 function drawFeatures() {
-  const feats = ['casos_lag1','media_movel_4','casos_lag2','casos_lag4','umidmed','tempmed','p_rt1','mes','semana','tempmax'];
-  const imps  = [0.38, 0.22, 0.14, 0.09, 0.06, 0.04, 0.03, 0.02, 0.01, 0.01];
-  const colors = imps.map(v => v > 0.2 ? '#C8382A' : v > 0.08 ? '#D97B2A' : '#6B9BB5');
-
-  Plotly.newPlot('chartFeatures', [{
-    y: feats, x: imps,
-    type: 'bar', orientation: 'h',
-    marker: {color: colors, cornerradius: 3},
-    hovertemplate: '<b>%{y}</b><br>Importância: %{x:.2f}<extra></extra>',
-  }], {
-    ...LAYOUT_BASE,
-    margin: {t: 10, r: 20, b: 40, l: 100},
-    xaxis: {...LAYOUT_BASE.xaxis, title: {text: 'Importância', font: {size: 10}}},
-    yaxis: {showgrid: false, color: '#6B5E58', tickfont: {size: 10}},
-  }, CFG);
+  const feats=['casos_lag1','media_movel_4','casos_lag2','casos_lag4','umidmed','tempmed','p_rt1','mes','semana','tempmax'];
+  const imps=[0.38,0.22,0.14,0.09,0.06,0.04,0.03,0.02,0.01,0.01];
+  const colors=imps.map(v=>v>0.2?'#C8382A':v>0.08?'#D97B2A':'#6B9BB5');
+  Plotly.newPlot('chartFeatures',[{
+    y:feats,x:imps,type:'bar',orientation:'h',
+    marker:{color:colors},hovertemplate:'<b>%{y}</b><br>Importância: %{x:.2f}<extra></extra>',
+  }],{...LAYOUT_BASE,margin:{t:10,r:20,b:40,l:100},
+    xaxis:{...LAYOUT_BASE.xaxis,title:{text:'Importância',font:{size:10}}},
+    yaxis:{showgrid:false,color:'#6B5E58',tickfont:{size:10}}},CFG);
 }
 
-// ─── RENDER ALL ──────────────────────────────────────────────────────────────
 function render() {
   const data = filtered();
   updateKPIs(data);
@@ -589,11 +373,12 @@ function render() {
   drawScatter(data);
   drawNivel(data);
   drawAnual(data);
-  drawModelos();   // static
-  drawFeatures();  // static
+  drawModelos();
+  drawFeatures();
 }
 
-render();
+// ─── INICIAR ─────────────────────────────────────────────────────────────
+carregarDados();
 </script>
 </body>
 </html>
