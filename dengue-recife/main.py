@@ -83,6 +83,10 @@ def main():
     joblib.dump(features, "models/features.pkl")
     print("\n✅ Modelo XGBoost salvo em models/")
 
+    # Após o loop dos 3 modelos, antes de salvar o modelo
+    from src.visualization import plotar_comparativo_modelos
+    plotar_comparativo_modelos(resultados)
+
     # ── 4. Gerar mapa por bairro ───────────────────────────
     print("\n🗺️  Etapa 4: Gerando mapa...")
     try:
