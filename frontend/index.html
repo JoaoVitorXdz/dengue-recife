@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DengueAlert Recife</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -310,6 +311,40 @@
     .stat-grid { grid-template-columns: 1fr 1fr; }
     footer { flex-direction: column; gap: 1rem; text-align: center; }
   }
+
+  /* ── SEÇÃO MAPA ───────────────────────────────── */
+  .mapa-section { background: var(--ink); padding: 6rem 3rem; }
+  .mapa-section .section-tag { color: var(--amber); }
+  .mapa-section .section-title { color: var(--paper); }
+  .mapa-section .section-sub { color: rgba(250,247,244,0.6); margin-bottom: 2rem; }
+  .mapa-wrap { display: grid; grid-template-columns: 1fr 300px; gap: 1.5rem; align-items: start; }
+  #mapaRecife { height: 460px; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+  .mapa-painel { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1.5rem; }
+  .mapa-painel-title { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--paper); margin-bottom: 1rem; }
+  .mapa-kpi { margin-bottom: 1rem; }
+  .mapa-kpi-num { font-family: 'DM Serif Display', serif; font-size: 1.9rem; line-height: 1; }
+  .mapa-kpi-lbl { font-size: 0.78rem; color: rgba(250,247,244,0.45); margin-top: 0.15rem; }
+  .mapa-fonte { font-size: 0.72rem; color: rgba(250,247,244,0.3); margin-top: 0.25rem; }
+  .mapa-fonte.api-on { color: #6FCF97; }
+  .mapa-legenda { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08); }
+  .mapa-leg-titulo { font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: .08em; color: rgba(250,247,244,0.35); margin-bottom: .6rem; }
+  .mapa-leg-item { display: flex; align-items: center; gap: .55rem; margin-bottom: .4rem; font-size: .8rem; color: rgba(250,247,244,0.65); }
+  .mapa-leg-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+  .bairro-box { background: rgba(255,255,255,0.07); border-radius: 10px; padding: .9rem; margin-top: 1rem; display: none; }
+  .bairro-box.vis { display: block; }
+  .bairro-box-nome { font-weight: 500; color: var(--paper); font-size: .9rem; margin-bottom: .35rem; }
+  .bairro-box-casos { font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: var(--amber); }
+  .bairro-box-lbl { font-size: .72rem; color: rgba(250,247,244,0.4); }
+  .bairro-box-risco { display: inline-block; margin-top: .4rem; padding: .18rem .65rem; border-radius: 100px; font-size: .75rem; font-weight: 500; }
+  .r-baixo  { background: rgba(42,122,75,.3);  color: #6FCF97; }
+  .r-medio  { background: rgba(217,123,42,.3); color: #F2994A; }
+  .r-alto   { background: rgba(200,56,42,.3);  color: #EB5757; }
+  .r-critico{ background: rgba(123,0,0,.4);    color: #FF6B6B; }
+  @media(max-width:768px){
+    .mapa-wrap { grid-template-columns: 1fr; }
+    #mapaRecife { height: 300px; }
+  }
+
 </style>
 </head>
 <body>
@@ -484,6 +519,45 @@
   </div>
 </section>
 
+
+<!-- MAPA POR BAIRRO -->
+<section class="mapa-section" id="mapa">
+  <div class="reveal">
+    <div class="section-tag">Mapa epidemiológico</div>
+    <h2 class="section-title">Dengue por bairro em Recife</h2>
+    <p class="section-sub">Casos confirmados distribuídos pelos bairros · Fonte: Prefeitura do Recife (2013–2024)</p>
+  </div>
+  <div class="mapa-wrap reveal">
+    <div id="mapaRecife"></div>
+    <div class="mapa-painel">
+      <div class="mapa-painel-title">📊 Resumo</div>
+      <div class="mapa-kpi">
+        <div class="mapa-kpi-num" style="color:var(--amber)" id="mapaTotalCasos">49.987</div>
+        <div class="mapa-kpi-lbl">casos confirmados</div>
+      </div>
+      <div class="mapa-kpi">
+        <div class="mapa-kpi-num" style="color:#6FCF97" id="mapaTotalBairros">94</div>
+        <div class="mapa-kpi-lbl">bairros mapeados</div>
+      </div>
+      <div class="mapa-fonte" id="mapaFonte">⚪ Dados simulados (API offline)</div>
+      <div class="bairro-box" id="bairroBox">
+        <div class="bairro-box-nome" id="bairroNome">—</div>
+        <div class="bairro-box-lbl">casos confirmados acumulados</div>
+        <div class="bairro-box-casos" id="bairroCasos">—</div>
+        <div><span class="bairro-box-risco" id="bairroRisco">—</span></div>
+      </div>
+      <div class="mapa-legenda">
+        <div class="mapa-leg-titulo">Casos acumulados</div>
+        <div class="mapa-leg-item"><div class="mapa-leg-dot" style="background:#888"></div>Sem dados</div>
+        <div class="mapa-leg-item"><div class="mapa-leg-dot" style="background:#2A7A4B"></div>Baixo &lt; 300</div>
+        <div class="mapa-leg-item"><div class="mapa-leg-dot" style="background:#D97B2A"></div>Médio 300–1.000</div>
+        <div class="mapa-leg-item"><div class="mapa-leg-dot" style="background:#C8382A"></div>Alto 1.000–2.000</div>
+        <div class="mapa-leg-item"><div class="mapa-leg-dot" style="background:#7B0000"></div>Crítico &gt; 2.000</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- CTA -->
 <section class="cta-section">
   <h2 class="section-title">Teste o modelo agora</h2>
@@ -514,5 +588,173 @@
   }, { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+// ══════════════════════════════════════════════════════
+// MAPA EMBUTIDO — tenta API real, usa simulado se offline
+// ══════════════════════════════════════════════════════
+
+// Dados simulados dos principais bairros (fallback offline)
+const DADOS_SIMULADOS = {
+  "COHAB":3369,"IBURA":2590,"VARZEA":2174,"AFOGADOS":1842,"IPUTINGA":1841,
+  "BOA VIAGEM":1825,"IMBIRIBEIRA":1774,"AGUA FRIA":1757,"AREIAS":1464,
+  "CASA AMARELA":1299,"IPSEP":1180,"PRAZERES":1050,"MUSTARDINHA":980,
+  "SANCHO":920,"MANGUEIRA":860,"CAJUEIRO":820,"CORDEIRO":810,"JORDAO":800,
+  "JARDIM SAO PAULO":780,"BEBERIBE":750,"NOVA DESCOBERTA":680,"TEJIPIÓ":650,
+  "COQUEIRAL":620,"ENGENHO DO MEIO":590,"MACAXEIRA":560,"APIPUCOS":520,
+  "DOIS UNIDOS":490,"ALTO JOSE DO PINHO":470,"SITIO DOS PINTOS":440,"PINA":420,
+  "ILHA DO RETIRO":380,"BREJO DO BEBERIBE":350,"SANTO AMARO":320,
+  "BOMBA DO HEMETERIO":295,"GUABIRABA":280,"VASCO DA GAMA":260,
+  "POCO DA PANELA":240,"MADALENA":220,"TORRE":200,"GRACAS":180,
+};
+
+let dadosBairros = { ...DADOS_SIMULADOS };
+let mapaIniciado = false;
+let leafletMap   = null;
+let geojsonLayer = null;
+
+function corBairro(casos) {
+  if (!casos)      return "#666666";
+  if (casos < 300) return "#2A7A4B";
+  if (casos < 1000)return "#D97B2A";
+  if (casos < 2000)return "#C8382A";
+  return "#7B0000";
+}
+
+function riscoInfo(casos) {
+  if (!casos)      return { label: "⚪ Sem dados", cls: "" };
+  if (casos < 300) return { label: "🟢 Baixo",    cls: "r-baixo" };
+  if (casos < 1000)return { label: "🟡 Médio",    cls: "r-medio" };
+  if (casos < 2000)return { label: "🔴 Alto",     cls: "r-alto" };
+  return               { label: "🔴 Crítico", cls: "r-critico" };
+}
+
+function atualizarEstiloCamada() {
+  if (!geojsonLayer) return;
+  geojsonLayer.setStyle(feature => {
+    const nome  = (feature.properties.BAIRRO_NORM || feature.properties.EBAIRRNOME || '').toUpperCase();
+    const casos = dadosBairros[nome] || 0;
+    return { fillColor: corBairro(casos), weight: 1, color: '#444', fillOpacity: 0.78 };
+  });
+}
+
+function mostrarBairro(nome, casos) {
+  const risco = riscoInfo(casos);
+  document.getElementById('bairroBox').classList.add('vis');
+  document.getElementById('bairroNome').textContent  = nome;
+  document.getElementById('bairroCasos').textContent = (casos||0).toLocaleString('pt-BR');
+  const el = document.getElementById('bairroRisco');
+  el.textContent = risco.label;
+  el.className   = 'bairro-box-risco ' + risco.cls;
+}
+
+// Tenta carregar dados reais da API
+async function tentarCarregarAPI() {
+  try {
+    const res = await fetch('http://127.0.0.1:5000/mapa',
+      { signal: AbortSignal.timeout(2000) });
+    if (!res.ok) throw new Error();
+    const geojson = await res.json();
+    if (geojson.error) throw new Error();
+
+    // Extrai dados reais do GeoJSON retornado pela API
+    const novosDados = {};
+    let total = 0;
+    let comDados = 0;
+    geojson.features.forEach(f => {
+      const nome  = (f.properties.BAIRRO_NORM || '').toUpperCase();
+      const casos = f.properties.casos || 0;
+      if (nome) novosDados[nome] = casos;
+      total += casos;
+      if (casos > 0) comDados++;
+    });
+
+    dadosBairros = novosDados;
+
+    // Atualiza KPIs com dados reais
+    document.getElementById('mapaTotalCasos').textContent  = total.toLocaleString('pt-BR');
+    document.getElementById('mapaTotalBairros').textContent = comDados;
+    const fonteEl = document.getElementById('mapaFonte');
+    fonteEl.textContent  = '🟢 Dados reais da Prefeitura do Recife';
+    fonteEl.className    = 'mapa-fonte api-on';
+
+    // Atualiza cores no mapa se já renderizou
+    atualizarEstiloCamada();
+
+    console.log('✅ Mapa: dados reais carregados da API');
+  } catch(e) {
+    console.log('ℹ️ Mapa: API offline, usando dados simulados');
+  }
+}
+
+function iniciarMapa() {
+  if (mapaIniciado) return;
+  mapaIniciado = true;
+
+  leafletMap = L.map('mapaRecife', { zoomControl: true, scrollWheelZoom: false })
+    .setView([-8.05, -34.90], 12);
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '© OpenStreetMap © CARTO', maxZoom: 18
+  }).addTo(leafletMap);
+
+  // Tenta carregar API enquanto renderiza com dados simulados
+  tentarCarregarAPI();
+
+  // Carrega GeoJSON dos polígonos
+  fetch('../dengue-recife/data/geo/recife_bairros.geojson')
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(geojson => {
+      geojsonLayer = L.geoJSON(geojson, {
+        style: feature => {
+          const nome  = (feature.properties.EBAIRRNOME || '').toUpperCase();
+          const casos = dadosBairros[nome] || 0;
+          return { fillColor: corBairro(casos), weight: 1, color: '#444', fillOpacity: 0.78 };
+        },
+        onEachFeature: (feature, layer) => {
+          layer.on({
+            mouseover: e => e.target.setStyle({ weight: 2.5, color: '#fff', fillOpacity: 0.92 }),
+            mouseout:  e => geojsonLayer.resetStyle(e.target),
+            click: () => {
+              const nome  = (feature.properties.EBAIRRNOME || 'Bairro').toUpperCase();
+              const casos = dadosBairros[nome] || 0;
+              layer.bindTooltip(`<b>${nome}</b><br>${casos.toLocaleString('pt-BR')} casos`, {sticky:true}).openTooltip();
+              mostrarBairro(nome, casos);
+            }
+          });
+          const nome  = (feature.properties.EBAIRRNOME || '').toUpperCase();
+          const casos = dadosBairros[nome] || 0;
+          layer.bindTooltip(`<b>${nome}</b><br>${casos.toLocaleString('pt-BR')} casos`, {sticky:true});
+        }
+      }).addTo(leafletMap);
+    })
+    .catch(() => {
+      // Fallback: marcadores dos bairros conhecidos
+      const coordsBairros = {
+        "COHAB":[-8.08,-34.92],"IBURA":[-8.12,-34.94],"VARZEA":[-8.07,-34.96],
+        "BOA VIAGEM":[-8.12,-34.90],"IPUTINGA":[-8.07,-34.94],"AFOGADOS":[-8.09,-34.93],
+        "CASA AMARELA":[-8.01,-34.93],"AGUA FRIA":[-7.99,-34.92],
+        "IMBIRIBEIRA":[-8.11,-34.91],"AREIAS":[-8.09,-34.95]
+      };
+      Object.entries(coordsBairros).forEach(([nome, ll]) => {
+        const casos = dadosBairros[nome] || 0;
+        L.circleMarker(ll, {
+          radius: 7 + Math.sqrt(casos / 120),
+          fillColor: corBairro(casos), color: '#fff',
+          weight: 1.5, fillOpacity: 0.85
+        }).addTo(leafletMap)
+          .bindTooltip(`<b>${nome}</b><br>${casos.toLocaleString('pt-BR')} casos`)
+          .on('click', () => mostrarBairro(nome, casos));
+      });
+    });
+}
+
+// Inicia o mapa ao rolar até a seção
+new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) iniciarMapa();
+}, { threshold: 0.1 }).observe(document.getElementById('mapa'));
+</script>
+
 </body>
 </html>
