@@ -81,7 +81,7 @@ def salvar_dados(
 
 
 if __name__ == "__main__":
-    df = coletar_dados(ano_inicio=2015, ano_fim=2024)
+    df = coletar_dados(ano_inicio=2013, ano_fim=2024)
 
     if not df.empty:
         salvar_dados(df)
