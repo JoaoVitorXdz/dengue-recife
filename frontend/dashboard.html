@@ -27,12 +27,29 @@
   .dash-tag{font-size:.75rem;font-weight:500;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem}
   .dash-title{font-family:'DM Serif Display',serif;font-size:2rem;line-height:1.2;margin-bottom:.4rem}
   .dash-sub{color:var(--muted);font-size:.9rem;margin-bottom:2rem}
-  .filter-bar{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem 1.5rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:2rem;}
+
+  /* FILTER BAR */
+  .filter-bar{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem 1.5rem;margin-bottom:2rem;}
+  .filter-top{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;}
   .filter-label{font-size:.8rem;font-weight:500;color:var(--muted);white-space:nowrap}
   .year-pills{display:flex;gap:.5rem;flex-wrap:wrap}
   .pill{padding:.3rem .85rem;border-radius:100px;font-size:.8rem;font-weight:500;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;}
   .pill:hover{border-color:var(--red);color:var(--red)}
   .pill.active{background:var(--red);border-color:var(--red);color:white}
+  .pill-todos{border-color:var(--ink);color:var(--ink)}
+  .pill-todos.active{background:var(--ink);border-color:var(--ink);color:white}
+
+  /* Hint de uso */
+  .filter-hint{font-size:.75rem;color:var(--muted);margin-top:.6rem;padding-top:.6rem;border-top:1px solid var(--border);}
+  .filter-hint kbd{background:var(--border);padding:.1rem .35rem;border-radius:4px;font-size:.7rem;font-family:inherit;}
+
+  /* Status dos anos selecionados */
+  .filter-status-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border);}
+  .filter-status{font-size:.82rem;color:var(--muted)}
+  .filter-status strong{color:var(--ink)}
+  .btn-limpar{background:none;border:none;color:var(--red);font-size:.78rem;cursor:pointer;font-family:inherit;padding:0;text-decoration:underline;display:none}
+  .btn-limpar.vis{display:inline}
+
   .kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
   .kpi{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.25rem 1.5rem;transition:transform .2s,box-shadow .2s;}
   .kpi:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.07)}
@@ -57,8 +74,6 @@
   .insight.red{border-left-color:var(--red)}.insight.green{border-left-color:var(--green)}.insight.amber{border-left-color:var(--amber)}
   .insight-title{font-weight:500;font-size:.85rem;margin-bottom:.4rem}
   .insight-text{font-size:.8rem;color:var(--muted);line-height:1.6}
-  /* Loading state */
-  .loading{text-align:center;padding:4rem;color:var(--muted);font-size:.9rem}
   .api-warning{background:#FDF3E7;border:1px solid var(--amber);border-radius:10px;padding:.75rem 1rem;font-size:.82rem;color:var(--amber);margin-bottom:1.5rem;display:none;}
   @media(max-width:900px){
     .kpi-strip{grid-template-columns:1fr 1fr}
@@ -92,24 +107,31 @@
   </div>
 
   <div class="filter-bar">
-    <span class="filter-label">Período:</span>
-    <div class="year-pills" id="yearPills"></div>
-    <div style="width:1px;height:24px;background:var(--border)"></div>
-    <span class="filter-label" id="filterStatus">Carregando...</span>
+    <div class="filter-top">
+      <span class="filter-label">Período:</span>
+      <div class="year-pills" id="yearPills"></div>
+    </div>
+    <div class="filter-hint">
+      Clique em um ano para selecioná-lo · Clique em mais anos para <kbd>comparar</kbd> · <kbd>Todos</kbd> reseta a seleção
+    </div>
+    <div class="filter-status-row">
+      <span class="filter-status" id="filterStatus">Carregando...</span>
+      <button class="btn-limpar" id="btnLimpar" onclick="limparFiltro()">✕ Limpar seleção</button>
+    </div>
   </div>
 
   <div class="kpi-strip">
     <div class="kpi"><div class="kpi-label">Total de casos</div><div class="kpi-val red" id="kpiTotal">—</div><div class="kpi-change">estimados pelo modelo</div></div>
     <div class="kpi"><div class="kpi-label">Pico semanal</div><div class="kpi-val amber" id="kpiPico">—</div><div class="kpi-change" id="kpiPicoDate">semana mais crítica</div></div>
     <div class="kpi"><div class="kpi-label">Semanas em alerta alto</div><div class="kpi-val red" id="kpiAlerta">—</div><div class="kpi-change">nível 3 ou 4</div></div>
-    <div class="kpi"><div class="kpi-label">Temp. média</div><div class="kpi-val green" id="kpiTemp">—</div><div class="kpi-change">média histórica Recife</div></div>
+    <div class="kpi"><div class="kpi-label">Temp. média</div><div class="kpi-val green" id="kpiTemp">—</div><div class="kpi-change">média histórica</div></div>
   </div>
 
   <div class="chart-grid" style="margin-bottom:1.5rem">
     <div class="chart-card">
       <div class="chart-card-header">
-        <div><div class="chart-card-title">Casos estimados por semana</div><div class="chart-card-sub">Série temporal 2015–2024</div></div>
-        <span class="chart-badge badge-red">2015 – 2024</span>
+        <div><div class="chart-card-title">Casos estimados por semana</div><div class="chart-card-sub">Série temporal</div></div>
+        <span class="chart-badge badge-red" id="badgeTimeline">—</span>
       </div>
       <div class="chart-area" id="chartTimeline" style="height:280px"></div>
     </div>
@@ -139,7 +161,7 @@
 
   <div class="chart-grid chart-row-2" style="margin-bottom:2rem">
     <div class="chart-card">
-      <div class="chart-card-header"><div><div class="chart-card-title">Total de casos por ano</div><div class="chart-card-sub">Soma anual dos casos estimados</div></div><span class="chart-badge badge-red">Anual</span></div>
+      <div class="chart-card-header"><div><div class="chart-card-title">Total de casos por ano</div><div class="chart-card-sub">Soma anual — anos selecionados destacados</div></div><span class="chart-badge badge-red">Anual</span></div>
       <div class="chart-area" id="chartAnual" style="height:240px"></div>
     </div>
     <div class="chart-card">
@@ -156,7 +178,6 @@
 </div>
 
 <script>
-// ─── DADOS DE FALLBACK (usados quando API está offline) ──────────────────
 function gerarDemoData() {
   const rows = [];
   const seed = [
@@ -186,7 +207,6 @@ function gerarDemoData() {
   return rows;
 }
 
-// ─── ESTADO GLOBAL ───────────────────────────────────────────────────────
 let ALL_DATA = [];
 let YEARS = [];
 let selectedYears = new Set();
@@ -201,71 +221,102 @@ const LAYOUT_BASE = {
 };
 const CFG={responsive:true,displayModeBar:false};
 
-// ─── CARREGAR DADOS DA API (com fallback) ────────────────────────────────
 async function carregarDados() {
   try {
     const res = await fetch('http://127.0.0.1:5000/historico', {signal: AbortSignal.timeout(3000)});
     if (!res.ok) throw new Error('API error');
     const raw = await res.json();
-
     ALL_DATA = raw.map(d => {
       const date = new Date(d.data);
       return {
-        date: d.data,
-        yr:   date.getFullYear(),
-        w:    Math.ceil((date - new Date(date.getFullYear(),0,1)) / 604800000) + 1,
+        date: d.data, yr: date.getFullYear(),
+        w: Math.ceil((date - new Date(date.getFullYear(),0,1)) / 604800000) + 1,
         cases: d.casos_est || 0,
         nivel: d.nivel || (d.casos_est < 100 ? 1 : d.casos_est < 300 ? 2 : d.casos_est < 700 ? 3 : 4),
-        temp:  d.tempmed || 27,
-        umid:  d.umidmed || 78,
-        mes:   date.getMonth() + 1,
+        temp: d.tempmed || 27, umid: d.umidmed || 78, mes: date.getMonth() + 1,
       };
     }).filter(d => d.cases != null);
-
-    console.log('✅ Dados carregados da API:', ALL_DATA.length, 'semanas');
   } catch(e) {
-    console.warn('API offline, usando dados de demo:', e.message);
     document.getElementById('apiWarning').style.display = 'block';
     ALL_DATA = gerarDemoData();
   }
-
-  // FIX: calcular YEARS e selectedYears DEPOIS de carregar ALL_DATA
   YEARS = [...new Set(ALL_DATA.map(d => d.yr))].sort();
   selectedYears = new Set(YEARS);
   initUI();
 }
 
-// ─── INICIALIZAR UI ──────────────────────────────────────────────────────
 function initUI() {
-  // Pills
   const pillsEl = document.getElementById('yearPills');
-  ['Todos', ...YEARS].forEach((y, i) => {
+
+  // Pill "Todos"
+  const btnTodos = document.createElement('button');
+  btnTodos.className = 'pill pill-todos active';
+  btnTodos.textContent = 'Todos';
+  btnTodos.onclick = () => limparFiltro();
+  pillsEl.appendChild(btnTodos);
+
+  // Pills dos anos
+  YEARS.forEach(y => {
     const btn = document.createElement('button');
-    btn.className = 'pill' + (i === 0 ? ' active' : '');
+    btn.className = 'pill';
     btn.textContent = y;
+    btn.dataset.year = y;
     btn.onclick = () => toggleYear(y, btn);
     pillsEl.appendChild(btn);
   });
+
   render();
 }
 
+// ─── FILTRO MULTI-SELECT ─────────────────────────────────────────────────
+// 1º clique num ano → seleciona SÓ ele
+// Cliques seguintes em outros anos → adiciona à seleção (comparação)
+// Clicar num ano já selecionado → remove da seleção
+// "Todos" → reseta tudo
 function toggleYear(y, btn) {
-  if (y === 'Todos') {
-    selectedYears = new Set(YEARS);
-    document.querySelectorAll('.pill').forEach((p,i) => p.classList.toggle('active', i===0));
+  const isTodos = selectedYears.size === YEARS.length;
+
+  if (isTodos) {
+    // Estava em "Todos" → inicia nova seleção com só esse ano
+    selectedYears = new Set([y]);
+  } else if (selectedYears.has(y)) {
+    // Já estava selecionado → remove
+    selectedYears.delete(y);
+    // Se ficou vazio → volta para Todos
+    if (selectedYears.size === 0) {
+      limparFiltro();
+      return;
+    }
   } else {
-    document.querySelector('.pill').classList.remove('active');
-    selectedYears.has(y) ? selectedYears.delete(y) : selectedYears.add(y);
-    btn.classList.toggle('active', selectedYears.has(y));
-    if (selectedYears.size === 0) { selectedYears = new Set(YEARS); document.querySelector('.pill').classList.add('active'); }
-    if (selectedYears.size === YEARS.length) document.querySelector('.pill').classList.add('active');
+    // Não estava selecionado → adiciona (multi-select)
+    selectedYears.add(y);
   }
+
+  // Atualiza visual dos pills
+  syncPills();
   render();
+}
+
+function limparFiltro() {
+  selectedYears = new Set(YEARS);
+  syncPills();
+  render();
+}
+
+function syncPills() {
+  const isTodos = selectedYears.size === YEARS.length;
+  // Pill "Todos"
+  document.querySelector('.pill-todos').classList.toggle('active', isTodos);
+  // Pills dos anos
+  document.querySelectorAll('.pill[data-year]').forEach(p => {
+    p.classList.toggle('active', selectedYears.has(parseInt(p.dataset.year)));
+  });
+  // Botão limpar: aparece só quando há seleção parcial
+  document.getElementById('btnLimpar').classList.toggle('vis', !isTodos);
 }
 
 function filtered() { return ALL_DATA.filter(d => selectedYears.has(d.yr)); }
 
-// ─── KPIs ────────────────────────────────────────────────────────────────
 function updateKPIs(data) {
   if (!data.length) return;
   const total = data.reduce((s,d) => s+d.cases, 0);
@@ -277,20 +328,58 @@ function updateKPIs(data) {
   document.getElementById('kpiPicoDate').textContent = peak.date;
   document.getElementById('kpiAlerta').textContent   = high;
   document.getElementById('kpiTemp').textContent     = avgT+'°C';
-  document.getElementById('filterStatus').textContent =
-    selectedYears.size===YEARS.length ? 'Exibindo todos os anos ('+YEARS[0]+'–'+YEARS[YEARS.length-1]+')' :
-    'Exibindo: '+[...selectedYears].sort().join(', ');
+
+  const anos = [...selectedYears].sort();
+  const isTodos = selectedYears.size === YEARS.length;
+  const statusEl = document.getElementById('filterStatus');
+
+  if (isTodos) {
+    statusEl.innerHTML = 'Exibindo <strong>todos os anos</strong> (' + YEARS[0] + '–' + YEARS[YEARS.length-1] + ')';
+    document.getElementById('badgeTimeline').textContent = YEARS[0] + ' – ' + YEARS[YEARS.length-1];
+  } else if (anos.length === 1) {
+    statusEl.innerHTML = 'Exibindo apenas <strong>' + anos[0] + '</strong>';
+    document.getElementById('badgeTimeline').textContent = anos[0];
+  } else {
+    statusEl.innerHTML = 'Comparando <strong>' + anos.length + ' anos</strong>: ' + anos.join(', ');
+    document.getElementById('badgeTimeline').textContent = anos.join(', ');
+  }
 }
 
-// ─── GRÁFICOS ────────────────────────────────────────────────────────────
 function drawTimeline(data) {
-  Plotly.newPlot('chartTimeline',[{
-    x:data.map(d=>d.date),y:data.map(d=>d.cases),
-    type:'scatter',mode:'lines',
-    line:{color:'#C8382A',width:1.5},
-    fill:'tozeroy',fillcolor:'rgba(200,56,42,0.08)',
-    hovertemplate:'<b>%{x}</b><br>Casos: %{y}<extra></extra>',
-  }],{...LAYOUT_BASE,margin:{t:10,r:16,b:40,l:56},yaxis:{...LAYOUT_BASE.yaxis,title:{text:'Casos est.',font:{size:10}}}},CFG);
+  const anos = [...selectedYears].sort();
+  const isTodos = selectedYears.size === YEARS.length;
+
+  // Se selecionou múltiplos anos específicos: uma linha por ano (comparação)
+  if (!isTodos && anos.length > 1) {
+    const cores = ['#C8382A','#D97B2A','#2A7A4B','#2B7BB5','#7B5EA7','#E8A84A','#6B9BB5','#888'];
+    const traces = anos.map((yr, i) => {
+      const d = data.filter(x => x.yr === yr).sort((a,b) => a.w - b.w);
+      return {
+        x: d.map(x => 'Sem ' + x.w),
+        y: d.map(x => x.cases),
+        name: String(yr),
+        type: 'scatter', mode: 'lines',
+        line: {color: cores[i % cores.length], width: 2},
+        hovertemplate: '<b>' + yr + '</b> — Sem %{x}<br>Casos: %{y}<extra></extra>',
+      };
+    });
+    Plotly.newPlot('chartTimeline', traces, {
+      ...LAYOUT_BASE,
+      margin:{t:10,r:16,b:40,l:56},
+      showlegend: true,
+      legend: {orientation:'h', y:-0.15, font:{size:11}},
+      yaxis:{...LAYOUT_BASE.yaxis,title:{text:'Casos est.',font:{size:10}}}
+    }, CFG);
+  } else {
+    // Um único traço (todos os anos ou apenas 1 ano)
+    Plotly.newPlot('chartTimeline',[{
+      x:data.map(d=>d.date), y:data.map(d=>d.cases),
+      type:'scatter', mode:'lines',
+      line:{color:'#C8382A',width:1.5},
+      fill:'tozeroy', fillcolor:'rgba(200,56,42,0.08)',
+      hovertemplate:'<b>%{x}</b><br>Casos: %{y}<extra></extra>',
+    }],{...LAYOUT_BASE,margin:{t:10,r:16,b:40,l:56},yaxis:{...LAYOUT_BASE.yaxis,title:{text:'Casos est.',font:{size:10}}}},CFG);
+  }
 }
 
 function drawSazonalidade(data) {
@@ -318,7 +407,7 @@ function drawScatter(data) {
 
 function drawModelos() {
   const modelos=['Regressão\nLinear','Random\nForest','XGBoost'];
-  const mae=[21.9,17.5,14.3];const r2=[0.976,0.958,0.964];
+  const mae=[21.9,17.5,14.3]; const r2=[0.976,0.958,0.964];
   const colors=['#6B5E58','#D97B2A','#C8382A'];
   Plotly.newPlot('chartModelos',[
     {x:modelos,y:mae,name:'MAE (casos)',type:'bar',yaxis:'y',marker:{color:colors,opacity:0.85},hovertemplate:'<b>%{x}</b><br>MAE: %{y} casos<extra></extra>'},
@@ -343,13 +432,24 @@ function drawNivel(data) {
 }
 
 function drawAnual(data) {
-  const totals=YEARS.filter(yr=>selectedYears.has(yr))
-    .map(yr=>({yr,total:data.filter(d=>d.yr===yr).reduce((s,d)=>s+d.cases,0)}));
-  const colors=totals.map(d=>d.total>80000?'#C8382A':d.total>40000?'#D97B2A':'#6B9BB5');
+  // Mostra todos os anos mas destaca os selecionados
+  const isTodos = selectedYears.size === YEARS.length;
+  const totals = YEARS.map(yr => ({
+    yr,
+    total: ALL_DATA.filter(d => d.yr === yr).reduce((s,d) => s+d.cases, 0),
+    sel: selectedYears.has(yr),
+  }));
+  const colors = totals.map(d =>
+    isTodos
+      ? (d.total > 80000 ? '#C8382A' : d.total > 40000 ? '#D97B2A' : '#6B9BB5')
+      : (d.sel ? '#C8382A' : 'rgba(107,155,181,0.25)')
+  );
   Plotly.newPlot('chartAnual',[{
-    x:totals.map(d=>d.yr),y:totals.map(d=>d.total),type:'bar',
-    marker:{color:colors},hovertemplate:'<b>%{x}</b><br>Total: %{y:,.0f} casos<extra></extra>',
-  }],{...LAYOUT_BASE,margin:{t:10,r:12,b:40,l:60},xaxis:{...LAYOUT_BASE.xaxis,type:'category'},
+    x: totals.map(d=>d.yr), y: totals.map(d=>d.total), type:'bar',
+    marker:{color:colors},
+    hovertemplate:'<b>%{x}</b><br>Total: %{y:,.0f} casos<extra></extra>',
+  }],{...LAYOUT_BASE,margin:{t:10,r:12,b:40,l:60},
+    xaxis:{...LAYOUT_BASE.xaxis,type:'category'},
     yaxis:{...LAYOUT_BASE.yaxis,title:{text:'Total casos',font:{size:10}}}},CFG);
 }
 
@@ -377,7 +477,6 @@ function render() {
   drawFeatures();
 }
 
-// ─── INICIAR ─────────────────────────────────────────────────────────────
 carregarDados();
 </script>
 </body>
