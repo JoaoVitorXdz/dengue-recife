@@ -13,7 +13,7 @@ Vigilância Epidemiológica.
 
 ## 🎯 Objetivos
 
-- Coletar e processar dados históricos de dengue (2015–2024)
+- Coletar e processar dados históricos de dengue (2013–2024)
 - Identificar padrões sazonais e correlações climáticas
 - Comparar modelos de ML para previsão de casos
 - Apresentar resultados em dashboard interativo
