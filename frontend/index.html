@@ -362,7 +362,7 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-content">
-    <div class="hero-tag"><span></span> Sistema de Alerta Epidemiológico — Recife, PE</div>
+    <div class="hero-tag"><span></span> Projeto de Big Data — Recife, PE</div>
     <h1>Prevendo surtos de <em>dengue</em> antes que aconteçam</h1>
     <p>Modelo preditivo treinado com 10 anos de dados epidemiológicos e climáticos de Recife. R² acima de 0.97 nos melhores modelos.</p>
     <div class="hero-actions">
@@ -532,11 +532,11 @@
     <div class="mapa-painel">
       <div class="mapa-painel-title">📊 Resumo</div>
       <div class="mapa-kpi">
-        <div class="mapa-kpi-num" style="color:var(--amber)" id="mapaTotalCasos">49.987</div>
+        <div class="mapa-kpi-num" style="color:var(--amber)" id="mapaTotalCasos">—</div>
         <div class="mapa-kpi-lbl">casos confirmados</div>
       </div>
       <div class="mapa-kpi">
-        <div class="mapa-kpi-num" style="color:#6FCF97" id="mapaTotalBairros">94</div>
+        <div class="mapa-kpi-num" style="color:#6FCF97" id="mapaTotalBairros">—</div>
         <div class="mapa-kpi-lbl">bairros mapeados</div>
       </div>
       <div class="mapa-fonte" id="mapaFonte">⚪ Dados simulados (API offline)</div>
@@ -749,6 +749,9 @@ function iniciarMapa() {
       });
     });
 }
+
+// Tenta carregar KPIs da API imediatamente (sem esperar o mapa)
+tentarCarregarAPI();
 
 // Inicia o mapa ao rolar até a seção
 new IntersectionObserver(entries => {
