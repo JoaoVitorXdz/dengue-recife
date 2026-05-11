@@ -12,60 +12,63 @@
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink)}
 
-  nav{display:flex;align-items:center;justify-content:space-between;padding:.75rem 2rem;background:rgba(250,247,244,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:fixed;top:0;left:0;right:0;z-index:1000;}
+  nav{display:flex;align-items:center;justify-content:space-between;padding:.75rem 2rem;
+    background:rgba(250,247,244,0.96);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);position:fixed;top:0;left:0;right:0;z-index:1000;}
   .nav-logo{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--red);text-decoration:none}
   .nav-back{color:var(--muted);text-decoration:none;font-size:.85rem;display:flex;align-items:center;gap:.4rem;transition:color .2s}
   .nav-back:hover{color:var(--ink)}
 
   #map{height:100vh;margin-top:52px}
 
-  /* Painel lateral */
+  /* ── PAINEL LATERAL ── */
   .panel{
     position:fixed;top:52px;right:0;bottom:0;width:300px;
     background:var(--card);border-left:1px solid var(--border);
-    z-index:500;display:flex;flex-direction:column;
-    overflow:hidden;transition:transform .3s;
+    z-index:500;display:flex;flex-direction:column;overflow:hidden;
   }
   .panel-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
   .panel-title{font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.2rem}
   .panel-sub{font-size:.75rem;color:var(--muted)}
   .panel-body{padding:1.25rem 1.5rem;flex:1;overflow-y:auto}
 
-  /* Card de bairro selecionado */
-  .bairro-card{display:none}
-  .bairro-card.visible{display:block}
-  .bairro-name{font-family:'DM Serif Display',serif;font-size:1.4rem;margin-bottom:1rem}
-  .stat-row{display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border)}
-  .stat-row:last-child{border:none}
-  .stat-lbl{font-size:.8rem;color:var(--muted)}
-  .stat-val{font-weight:500;font-size:.95rem}
-  .risk-tag{display:inline-block;padding:.25rem .75rem;border-radius:100px;font-size:.8rem;font-weight:500;margin-top:.75rem}
-  .risk-tag.baixo{background:#E8F5EE;color:var(--green)}
-  .risk-tag.medio{background:#FDF3E7;color:var(--amber)}
-  .risk-tag.alto{background:#F2E8E6;color:var(--red)}
-  .risk-tag.critico{background:#7B0000;color:white}
-  .risk-tag.sem_dados{background:#F5F5F5;color:#999}
-
-  /* Legenda */
-  .legend{margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)}
-  .legend-title{font-size:.75rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem}
-  .legend-item{display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem;font-size:.82rem}
-  .legend-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
-
-  /* Stats gerais */
   .summary{background:var(--paper);border-radius:10px;padding:1rem;margin-bottom:1rem}
-  .summary-title{font-size:.75rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem}
+  .summary-title{font-size:.72rem;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.75rem}
   .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
   .summary-item{text-align:center;background:var(--card);border-radius:8px;padding:.6rem}
   .summary-num{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--red)}
   .summary-lbl{font-size:.7rem;color:var(--muted)}
 
-  /* Loading */
-  .loading-msg{text-align:center;padding:2rem;color:var(--muted);font-size:.85rem}
-  .api-warn{background:#FDF3E7;border:1px solid var(--amber);border-radius:8px;padding:.6rem .9rem;font-size:.75rem;color:var(--amber);margin-bottom:1rem;display:none}
+  .hint{background:var(--paper);border-radius:8px;padding:.75rem;
+    font-size:.78rem;color:var(--muted);line-height:1.6;margin-bottom:1rem}
 
-  /* Hint */
-  .hint{background:var(--paper);border-radius:8px;padding:.75rem;font-size:.78rem;color:var(--muted);line-height:1.6;margin-bottom:1rem}
+  /* Card do bairro selecionado */
+  .bairroBox{background:var(--paper);border-radius:10px;padding:1rem;
+    margin-bottom:1rem;display:none;border-left:3px solid var(--red)}
+  .bairroBox.vis{display:block}
+  .bairro-nome{font-weight:500;font-size:.95rem;color:var(--ink);margin-bottom:.75rem}
+  .stat-row{display:flex;justify-content:space-between;align-items:center;
+    padding:.5rem 0;border-bottom:1px solid var(--border);font-size:.85rem}
+  .stat-row:last-child{border:none}
+  .stat-lbl{color:var(--muted)}
+  .stat-val{font-weight:500}
+  .risco-tag{display:inline-block;margin-top:.6rem;padding:.2rem .7rem;
+    border-radius:100px;font-size:.78rem;font-weight:500}
+  .r-sem{background:#F5F5F5;color:#999}
+  .r-baixo{background:#E8F5EE;color:var(--green)}
+  .r-medio{background:#FDF3E7;color:var(--amber)}
+  .r-alto{background:#F2E8E6;color:var(--red)}
+  .r-critico{background:#7B0000;color:white}
+
+  .api-warn{background:#FDF3E7;border:1px solid var(--amber);border-radius:8px;
+    padding:.6rem .9rem;font-size:.75rem;color:var(--amber);margin-bottom:1rem;display:none}
+
+  /* Legenda */
+  .legenda{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)}
+  .legenda-title{font-size:.72rem;font-weight:500;text-transform:uppercase;
+    letter-spacing:.08em;color:var(--muted);margin-bottom:.6rem}
+  .leg-item{display:flex;align-items:center;gap:.55rem;margin-bottom:.4rem;font-size:.8rem;color:var(--muted)}
+  .leg-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
 
   @media(max-width:700px){
     .panel{width:100%;top:auto;bottom:0;height:40vh;border-left:none;border-top:1px solid var(--border)}
@@ -88,36 +91,59 @@
     <div class="panel-sub">Casos confirmados 2013–2024 · Prefeitura do Recife</div>
   </div>
   <div class="panel-body">
-    <div class="api-warn" id="apiWarn">⚠️ API offline. Rode: <code>python src/api.py</code></div>
 
-    <div id="loadingMsg" class="loading-msg">⏳ Carregando dados...</div>
+    <div class="api-warn" id="apiWarn">
+      ⚠️ API offline. Rode: <code>python src/api.py</code>
+    </div>
 
-    <div id="summaryBox" style="display:none">
+    <div id="loadingMsg" style="text-align:center;padding:2rem;color:var(--muted);font-size:.85rem">
+      ⏳ Carregando dados...
+    </div>
+
+    <div id="mainContent" style="display:none">
+
       <div class="summary">
         <div class="summary-title">Resumo geral</div>
         <div class="summary-grid">
-          <div class="summary-item"><div class="summary-num" id="sumTotal">—</div><div class="summary-lbl">casos totais</div></div>
-          <div class="summary-item"><div class="summary-num" id="sumBairros">—</div><div class="summary-lbl">bairros</div></div>
+          <div class="summary-item">
+            <div class="summary-num" id="sumTotal">—</div>
+            <div class="summary-lbl">casos totais</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-num" id="sumBairros" style="color:var(--green)">—</div>
+            <div class="summary-lbl">bairros</div>
+          </div>
         </div>
       </div>
 
       <div class="hint">👆 Clique em um bairro para ver os detalhes.</div>
 
-      <div class="bairro-card" id="bairroCard">
-        <div class="bairro-name" id="bairroNome">—</div>
-        <div class="stat-row"><span class="stat-lbl">Casos confirmados</span><span class="stat-val" id="bairroCasos">—</span></div>
-        <div class="stat-row"><span class="stat-lbl">% do total da cidade</span><span class="stat-val" id="bairroPerc">—</span></div>
-        <div class="stat-row"><span class="stat-lbl">Nível de risco histórico</span><span class="stat-val"><span id="bairroRisk" class="risk-tag">—</span></span></div>
+      <!-- Card do bairro selecionado -->
+      <div class="bairroBox" id="bairroBox">
+        <div class="bairro-nome" id="bairroNome">—</div>
+        <div class="stat-row">
+          <span class="stat-lbl">Casos confirmados</span>
+          <span class="stat-val" id="bairroCasos">—</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-lbl">% do total</span>
+          <span class="stat-val" id="bairroPerc">—</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-lbl">Nível histórico</span>
+          <span class="stat-val"><span id="bairroRisco" class="risco-tag r-sem">—</span></span>
+        </div>
       </div>
 
-      <div class="legend">
-        <div class="legend-title">Legenda — casos acumulados</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#CCCCCC"></div>Sem dados</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#2A7A4B"></div>Baixo (< 300 casos)</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#D97B2A"></div>Médio (300–1.000)</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#C8382A"></div>Alto (1.000–2.000)</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#7B0000"></div>Crítico (> 2.000)</div>
+      <div class="legenda">
+        <div class="legenda-title">Casos acumulados</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#CCCCCC"></div>Sem dados</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#2A7A4B"></div>Baixo &lt; 300</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#D97B2A"></div>Médio 300–1.000</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#C8382A"></div>Alto 1.000–2.000</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#7B0000"></div>Crítico &gt; 2.000</div>
       </div>
+
     </div>
   </div>
 </div>
@@ -125,91 +151,98 @@
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
 const map = L.map('map').setView([-8.05, -34.9], 12);
-
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-  attribution: '© OpenStreetMap © CARTO',
-  maxZoom: 19
+  attribution: '© OpenStreetMap © CARTO', maxZoom: 19
 }).addTo(map);
 
 let geojsonLayer = null;
-let lastSelected = null;
+let lastLayer    = null;
 
-function estilo(feature) {
-  return {
-    fillColor:   feature.properties.cor || '#CCCCCC',
-    weight:      1,
-    color:       '#888',
-    fillOpacity: 0.72,
-  };
+function corBairro(casos) {
+  if (!casos)       return '#CCCCCC';
+  if (casos < 300)  return '#2A7A4B';
+  if (casos < 1000) return '#D97B2A';
+  if (casos < 2000) return '#C8382A';
+  return '#7B0000';
 }
 
+function riscoInfo(casos) {
+  if (!casos)       return { label: '⚪ Sem dados',  cls: 'r-sem'     };
+  if (casos < 300)  return { label: '🟢 Baixo',      cls: 'r-baixo'   };
+  if (casos < 1000) return { label: '🟡 Médio',      cls: 'r-medio'   };
+  if (casos < 2000) return { label: '🔴 Alto',       cls: 'r-alto'    };
+  return               { label: '🔴 Crítico',    cls: 'r-critico' };
+}
+
+function estiloNormal(feature) {
+  return { fillColor: feature.properties.cor || '#CCCCCC',
+           weight: 1, color: '#888', fillOpacity: 0.72 };
+}
 function estiloDestaque(feature) {
-  return {
-    fillColor:   feature.properties.cor || '#CCCCCC',
-    weight:      2.5,
-    color:       '#222',
-    fillOpacity: 0.9,
-  };
+  return { fillColor: feature.properties.cor || '#CCCCCC',
+           weight: 2.5, color: '#222', fillOpacity: 0.92 };
 }
 
 function mostrarBairro(props) {
-  document.getElementById('bairroCard').classList.add('visible');
-  document.getElementById('bairroNome').textContent  = props.bairro_nome || props.EBAIRRNOME || '—';
-  document.getElementById('bairroCasos').textContent = (props.casos || 0).toLocaleString('pt-BR');
-  document.getElementById('bairroPerc').textContent  = (props.percentual || 0).toFixed(2) + '%';
-
-  const riskEl = document.getElementById('bairroRisk');
-  riskEl.textContent  = props.label || '—';
-  riskEl.className    = 'risk-tag ' + (props.risco || 'sem_dados');
-}
-
-function interacao(feature, layer) {
-  layer.on({
-    mouseover: (e) => {
-      if (lastSelected !== layer) layer.setStyle(estiloDestaque(feature));
-    },
-    mouseout: (e) => {
-      if (lastSelected !== layer) layer.setStyle(estilo(feature));
-    },
-    click: (e) => {
-      if (lastSelected) lastSelected.setStyle(estilo(lastSelected.feature));
-      lastSelected = layer;
-      layer.setStyle(estiloDestaque(feature));
-      map.fitBounds(layer.getBounds(), {padding: [40, 40]});
-      mostrarBairro(feature.properties);
-    }
-  });
+  const casos = props.casos || 0;
+  const risco = riscoInfo(casos);
+  document.getElementById('bairroBox').classList.add('vis');
+  document.getElementById('bairroNome').textContent   = props.bairro_nome || props.EBAIRRNOME || '—';
+  document.getElementById('bairroCasos').textContent  = casos.toLocaleString('pt-BR');
+  document.getElementById('bairroPerc').textContent   = (props.percentual || 0).toFixed(2) + '%';
+  const el = document.getElementById('bairroRisco');
+  el.textContent = risco.label;
+  el.className   = 'risco-tag ' + risco.cls;
 }
 
 async function carregarMapa() {
   try {
-    const res = await fetch('http://127.0.0.1:5000/mapa', {signal: AbortSignal.timeout(5000)});
+    const res = await fetch('http://127.0.0.1:5000/mapa',
+      { signal: AbortSignal.timeout(5000) });
     if (!res.ok) throw new Error('API error');
     const data = await res.json();
     if (data.error) throw new Error(data.error);
 
+    // Calcula totais
+    const features    = data.features || [];
+    const totalCasos  = features.reduce((s,f) => s + (f.properties.casos || 0), 0);
+    const totalBairros= features.filter(f => (f.properties.casos || 0) > 0).length;
+
+    document.getElementById('loadingMsg').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+    document.getElementById('sumTotal').textContent    = totalCasos.toLocaleString('pt-BR');
+    document.getElementById('sumBairros').textContent  = totalBairros;
+
     geojsonLayer = L.geoJSON(data, {
-      style: estilo,
-      onEachFeature: interacao
+      style: estiloNormal,
+      onEachFeature: (feature, layer) => {
+        const nome  = feature.properties.bairro_nome || feature.properties.EBAIRRNOME || 'Bairro';
+        const casos = feature.properties.casos || 0;
+        layer.bindTooltip(
+          `<b>${nome}</b><br>${casos.toLocaleString('pt-BR')} casos`,
+          { sticky: true }
+        );
+        layer.on({
+          mouseover: e => { if (lastLayer !== layer) layer.setStyle(estiloDestaque(feature)); },
+          mouseout:  e => { if (lastLayer !== layer) geojsonLayer.resetStyle(layer); },
+          click: () => {
+            if (lastLayer) geojsonLayer.resetStyle(lastLayer);
+            lastLayer = layer;
+            layer.setStyle(estiloDestaque(feature));
+            map.fitBounds(layer.getBounds(), { padding: [40, 40] });
+            mostrarBairro(feature.properties);
+          }
+        });
+      }
     }).addTo(map);
-
-    // Calcula totais para o resumo
-    const features = data.features || [];
-    const totalCasos   = features.reduce((s,f) => s + (f.properties.casos || 0), 0);
-    const totalBairros = features.filter(f => f.properties.casos > 0).length;
-
-    document.getElementById('loadingMsg').style.display  = 'none';
-    document.getElementById('summaryBox').style.display  = 'block';
-    document.getElementById('sumTotal').textContent   = totalCasos.toLocaleString('pt-BR');
-    document.getElementById('sumBairros').textContent = totalBairros;
 
   } catch(e) {
     console.warn('API offline:', e.message);
     document.getElementById('loadingMsg').style.display = 'none';
-    document.getElementById('summaryBox').style.display = 'block';
-    document.getElementById('apiWarn').style.display    = 'block';
-    document.getElementById('sumTotal').textContent     = '—';
-    document.getElementById('sumBairros').textContent   = '—';
+    document.getElementById('mainContent').style.display = 'block';
+    document.getElementById('apiWarn').style.display     = 'block';
+    document.getElementById('sumTotal').textContent      = '—';
+    document.getElementById('sumBairros').textContent    = '—';
   }
 }
 
