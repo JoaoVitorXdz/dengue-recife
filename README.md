@@ -79,11 +79,11 @@ python src/model.py
 
 # 4. Rodar dashboard Dash
 python src/dashboard.py
-# Acesse: http://127.0.0.1:8050
+# Acesse: http://seu ip:8050
 
 # 5. Rodar API Flask
 python src/api.py
-# Acesse: http://127.0.0.1:5000
+# Acesse: http://seu ip:5000
 
 # 6. Rodar pipeline completo (passos 2, 3 e relatório)
 python main.py
@@ -93,3 +93,5 @@ Código IBGE Recife: 2611606
 INMET — dados climáticos complementares (opcional)
 👤 Autor
 Desenvolvido como projeto de Big Data — Faculdade Estácio João Vitor — joaovitorxd3343@hotmail.com GitHub: https://github.com/JoaoVitorXdz/dengue-recife
+
+Colaboradores: Lilian Beatriz, Maria Clara, Danilly Nascimento, Sostenes Magno
